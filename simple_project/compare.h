@@ -1,6 +1,8 @@
 #pragma once
-float sqrt_plus(float a,float b);
+#include "compare.cpp"
 
+double find_max(double a, double b);
+double find_min(double a, double b);
 
 // header (.h) file
 // define #pragma once to prevent duplicate include.
