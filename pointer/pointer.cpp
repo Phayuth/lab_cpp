@@ -1,11 +1,13 @@
 #include <iostream>
 #include <stdio.h>
-#include <string>
+
+// &variable = to get the address of the variable
+// *address = to get the value inside of address
 
 std::string name = "Johnyuth"; // the original string variable "name" that has the value of "Johnyuth"
 std::string *neam = &name;	   // a pointer of type string "neam" that used to store the memory address of the reference variable "name"
 
-int main(int argc, char const *argv[])
+int main()
 {
 	// create original variable
 	std::cout << "Original = " << name << std::endl;
