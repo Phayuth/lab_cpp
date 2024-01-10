@@ -16,16 +16,11 @@ float function_default_value(float def = 11.11, int a = 1, int b = 2) {
     return c;
 }
 
-void print_stuff(std::string input_string) {
-    std::cout << input_string << std::endl;
-}
-
 void function_prototype(); // function prototype on top of main
 
 int main() {
 
     function_void();
-    print_stuff("--------------------------------------");
     function_prototype();
     int c = calculate_int(10, 56);
     std::cout << "The calculated value : " << c << std::endl;

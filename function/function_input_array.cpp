@@ -12,7 +12,7 @@ int main() {
     int arry[5] = {10, 20, 30, 40, 50};
     func1(arry);
 
-    std::cout << arry << std::endl;
+    std::cout << *(arry+1) << std::endl;
 
     return 0;
 }

@@ -8,10 +8,11 @@
 
 
 int main() {
-    // C-style array
-    printf("--------------------------------------------\n");
+    printf("---------------C-style array---------------------\n");
     float arraySingleDim[3] = {25., 63., 88.};
-    printf("Get value from c-style array with index are %.2f, %.2f, %.2f\n", arraySingleDim[0], arraySingleDim[1], arraySingleDim[2]);
+    for (auto i : arraySingleDim){
+        printf("Get value from c-style array with index are %.2f\n", i);
+    }
 
     float arrayAssignValue[3]; // pre initialize array
     arrayAssignValue[0] = 58.; // assign value to element array
@@ -26,15 +27,15 @@ int main() {
         }
     }
 
-    // C++ array
-    printf("--------------------------------------------\n");
+
+    printf("-------------------C++ array--------------------\n");
     std::array<int, 6> ar = {1, 3, 4, 5, 6, 7};
     printf("Get value from c++ class array %i, %i, %i\n", ar.at(3), ar[3], std::get<3>(ar));
     printf("Front and back member function %i, %i\n", ar.front(), ar.back());
     printf("Array Properties : %lu, %lu\n", ar.size(), ar.max_size());
 
-    // Equivalent to Python dictionary
-    printf("--------------------------------------------\n");
+
+    printf("-----------Equivalent to Python dictionary------\n");
     std::unordered_map<std::string, int> myMap;
     myMap["one"] = 1; // Insert key-value pairs
     myMap["two"] = 2;
@@ -44,8 +45,8 @@ int main() {
         printf("Key: %s, Value: %i\n", pair.first.c_str(), pair.second);
     }
 
-    // Struct
-    printf("--------------------------------------------\n");
+
+    printf("--------------------Struct----------------------\n");
     struct StructData {
         std::string heroName;
         int id;

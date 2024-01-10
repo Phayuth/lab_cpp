@@ -36,9 +36,9 @@ class Employee { // create class name Employee, in private, the data is encapsul
         }
 
         void IntroduceYourself() {                             // create function name IntroduceYourself
-            std::cout << "Name - " << Name << std::endl;       // print out Name
-            std::cout << "Company - " << Company << std::endl; // print out Company
-            std::cout << "Age - " << Age << std::endl;         // print out Age
+            std::cout << "Name - " << Name << std::endl;
+            std::cout << "Company - " << Company << std::endl;
+            std::cout << "Age - " << Age << std::endl;
         }
 
         Employee(std::string name, std::string company, int age) { // contructor
