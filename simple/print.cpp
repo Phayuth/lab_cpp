@@ -1,20 +1,6 @@
 #include <iostream>
 #include <stdio.h>
 
-// Character format
-// \a = audible alert ( sound waring noise)
-// \b = back space
-// \l = linefeed
-// \n = newline
-// \r = carriage return
-// \t = horizontal tab
-// \v = vertical bar
-// \' = sigle quote
-// \" = doble quote
-// \? = Question mark
-// \\ = backslash
-// \0 = null
-
 int main() {
     std::cout << "Hello \rMr. Nobby-";   // print hello to screen
     std::cout << "\n";                   // print newline
