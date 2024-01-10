@@ -1,49 +1,49 @@
-#include <iostream>
 #include <ctime>
+#include <iostream>
 
 using namespace std;
 
 // function to generate and return random numbers.
-int * getRandom( ) {
+int *getRandom() {
 
-	static int  r[10];
+    static int r[10];
 
-	// set the seed
-	srand( (unsigned)time( NULL ) );
+    // set the seed
+    srand((unsigned)time(NULL));
 
-	r[0] = 55;
-	r[1] = 45;
-	r[2] = 77;
-	r[3] = 54;
-	r[4] = 24;
-	r[5] = 75;
-	r[6] = 22;
-	r[7] = 55;
-	r[8] = 78;
-	r[9] = 97;
-	// for (int i = 0; i < 10; ++i) {
-	// 	r[i] = rand();
-	// 	//cout << r[i] << endl;   if u want to print out first
-	// }
+    r[0] = rand();
+    r[1] = rand();
+    r[2] = rand();
+    r[3] = rand();
+    r[4] = rand();
+    r[5] = rand();
+    r[6] = rand();
+    r[7] = rand();
+    r[8] = rand();
+    r[9] = rand();
+    // for (int i = 0; i < 10; ++i) {
+    // 	r[i] = rand();
+    //    cout << r[i] << endl;   if u want to print out first
+    // }
 
-	return r;
+    return r;
 }
 
-int main () {
+int main() {
 
-	// a pointer to an int.
-	int *p;
+    // a pointer to an int.
+    int *p;
 
-	p = getRandom();
+    p = getRandom();
 
-	int a;
-	int b;
+    int a;
+    int b;
 
-	a = *(p+0);
-	b = *(p+1);
+    a = *(p + 0);
+    b = *(p + 1);
 
-	cout << "First value is :" << a << endl;
-	cout << "First value is :" << b << endl;
+    cout << "First value is :" << a << endl;
+    cout << "First value is :" << b << endl;
 
-	return 0;
+    return 0;
 }

@@ -1,13 +1,13 @@
 #include <iostream>
 using namespace std;
 
-int main () {
+int main()
+{
 	// an int array with 5 elements.
 	int balance[5] = {1000, 2, 3, 17, 50};
 
-	int *ptr = &balance[0]+1; // the address can use addition and substract operation
+	int *ptr = &balance[0] + 1; // the address can use addition and substract operation
 	cout << *ptr << endl;
-
 
 	// In array
 	// the array address is the first element of the array address
