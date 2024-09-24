@@ -13,22 +13,23 @@ Eigen::Matrix<double, 2, 3> f;
 int main() {
     std::cout << "-----------------" << "\n";
     Eigen::Vector2d q(0, 0);
-    std::cout << "q = " << q << "q size = " << q.size() << "q rows = " << q.rows() << "q cols = " << q.cols() << std::endl;
+    std::cout << "q = " << q << " q size = " << q.size() << " q rows = " << q.rows() << " q cols = " << q.cols() << std::endl;
 
     std::cout << "-----------------" << "\n";
     auto t = forward(q);
-    std::cout << "t = " << t << "t size = " << t.size() << "t rows = " << t.rows() << "t coljs = " << t.cols() << std::endl;
+    std::cout << "t = " << t << " t size = " << t.size() << " t rows = " << t.rows() << " t coljs = " << t.cols() << std::endl;
 
     std::cout << "-----------------" << "\n";
-    Eigen::MatrixXd A(3,3), B(3,3);
+    Eigen::MatrixXd A(3, 3), B(3, 3);
     A << 0, 1, 3,
-         5, 4, 1,
-         8, 4, 8;
+        5, 4, 1,
+        8, 4, 8;
 
     B << 1, 5, 1,
-         6, 5, 1,
-         9, 3, 2;
-    std::cout << A << "\n" << B << std::endl;
+        6, 5, 1,
+        9, 3, 2;
+    std::cout << A << "\n"
+              << B << std::endl;
 
     std::cout << "-----------------" << "\n";
     std::cout << A + B << std::endl;
@@ -46,10 +47,10 @@ int main() {
     std::cout << -A << std::endl;
 
     std::cout << "-----------------" << "\n";
-    std::cout << 9*A  << std::endl;
+    std::cout << 9 * A << std::endl;
 
     std::cout << "-----------------" << "\n";
-    std::cout << A/9 << std::endl;
+    std::cout << A / 9 << std::endl;
 
     std::cout << "-----------------" << "\n";
     std::cout << A.transpose() << std::endl;

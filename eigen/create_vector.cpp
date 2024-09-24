@@ -7,7 +7,7 @@ Eigen::Vector4i b = {1, 3, 2, 3};          // allocated vector with 4 dim with
 Eigen::Vector2d c = Eigen::Vector2d(1, 2); // allocated vector with 2 dim with create from contructor
 
 // Vector with uninitialize value
-Eigen::VectorXd d(10);                      // dynamic size vector, allocated with abitrary dim
+Eigen::VectorXd d(10); // dynamic size vector, allocated with abitrary dim
 Eigen::VectorXd e(3);
 
 int main() {
@@ -30,7 +30,7 @@ int main() {
     std::cout << "Row : " << aTranspose3.rows() << " Cols : " << aTranspose3.cols() << "\n";
 
     std::cout << "-----------------" << "\n";
-    Eigen::VectorXd m  = Eigen::VectorXd::Random(3);
+    Eigen::VectorXd m = Eigen::VectorXd::Random(3);
     std::cout << m << "\n";
 
     std::cout << "-----------------" << "\n";

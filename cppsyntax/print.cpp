@@ -2,11 +2,11 @@
 #include <stdio.h>
 
 int main() {
-    std::cout << "Hello \rMr. Nobby-";   // print hello to screen
-    std::cout << "\n";                   // print newline
-    std::cout << 5;                      // can directly print number
+    std::cout << "Hello \rMr. Nobby-"; // print hello to screen
+    std::cout << "\n";                 // print newline
+    std::cout << 5;                    // can directly print number
     std::cout << "\n";
-    std::cout << "5";                    // can directly print number
+    std::cout << "5"; // can directly print number
     std::cout << "\n";
     std::cout << "\r";
 
@@ -29,7 +29,6 @@ int main() {
     printf("Precision: %.15f\n", pi);
 
     printf("Pointer Address: %p\n", pPi);
-
 
     return 0;
 }

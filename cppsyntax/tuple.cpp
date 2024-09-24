@@ -1,14 +1,11 @@
 #include <iostream>
 #include <tuple>
 
-char hero;
 std::string res1;
 std::string res2;
 std::string name;
 
-// return multiple value from function in tuple form
 // std::tuple<datatype, datatype, datatype> name of function(datatype input)
-//   code
 // return std::make_tuple(value1, value2 , value3), value have to have the exact same datatype as define above
 std::tuple<std::string, std::string, std::string> Return_responce(char hero) {
     if (hero == 'T' || hero == 't') {

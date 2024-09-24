@@ -14,11 +14,6 @@
 \0 = null
 ```
 
-# Function
-1. Argument Pass by Value
-2. Argument Pass by Pointer
-3. Argument Pass by Reference
-
 # References Link
 - Input/output manipulators - https://en.cppreference.com/w/cpp/io/manip
 - Math - https://en.cppreference.com/w/cpp/header/cmath

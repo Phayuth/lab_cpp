@@ -4,7 +4,7 @@
 // Matrix
 Eigen::Matrix3d A = Eigen::Matrix3d::Identity();
 Eigen::Matrix<double, 2, 3> B;
-Eigen::MatrixXd C(3,3);
+Eigen::MatrixXd C(3, 3);
 // Eigen::Matrix2d D = {{1,1},{2,2}}; pre init coeff is not available for matrix
 
 int main() {
@@ -17,15 +17,14 @@ int main() {
 
     std::cout << "-----------------" << "\n";
     B << 2, 3, 4,
-         5, 6, 7;
+        5, 6, 7;
     std::cout << B << std::endl;
     std::cout << B * 2 << std::endl;
     std::cout << B.cwiseProduct(B * 2) << std::endl;
 
     std::cout << "-----------------" << "\n";
     C << 2, 3, 4,
-         5, 6, 7,
-         8, 9, 1;
+        5, 6, 7,
+        8, 9, 1;
     std::cout << C << std::endl;
-
 }
