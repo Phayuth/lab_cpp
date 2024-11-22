@@ -104,10 +104,14 @@ int main() {
     Teacher tec1("NB-", "CU", 26, "Math");
     tec1.IntroduceYourself();
 
-    Employee *e1 = &dev1; // polymorphism : create a pointer of type super class that point to address to derived child class
+    // polymorphism : create a pointer of type super class that point to address to derived child class
+    Employee *e1 = &dev1;
     Employee *t1 = &tec1;
 
-    e1->work(); // polymorphism : then a pointer can directly use method and properties of derived child class. for normal object use "." symbol. for pointer object use "->".
+    // polymorphism : then a pointer can directly use method and properties of derived child class.
+    // for normal object use "." symbol. for pointer object use "->".
+    e1->work();
+
     t1->work();
 
     return 0;

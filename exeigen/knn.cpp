@@ -2,22 +2,6 @@
 #include <iostream>
 
 int main() {
-    // Eigen::VectorXd d(6);
-    // d << 0.0, 1.0, 2.0, 3.0, 4.0, 5.0;
-
-    // Eigen::VectorXd e(6);
-    // e << 1.0, 1.0, 1.0, 5.0, 5.0, 5.0;
-
-    // auto t = d - e;
-    // std::cout << t;
-
-    // Eigen::MatrixXd m(6,6);
-
-    // std::cout << m;
-
-    // auto y = m.colwise() - e;
-    // std::cout << y;
-
     Eigen::MatrixXf m(2, 4);
     Eigen::VectorXf v(2);
 
