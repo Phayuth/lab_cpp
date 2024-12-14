@@ -29,8 +29,14 @@ int main() {
 
     // Simulation setup
     std::vector<Rectangle> env;
-    env.push_back(Rectangle(-2.75, 1.0, 2.0, 1.0));
-    env.push_back(Rectangle(1.5, 2.0, 2.0, 1.0));
+    // ijcas env
+    // env.push_back(Rectangle(-2.75, 1.0, 2.0, 1.0));
+    // env.push_back(Rectangle(1.5, 2.0, 2.0, 1.0));
+
+    // ifac env
+    env.push_back(Rectangle(-0.7, 1.3, 2.0, 2.2));
+    env.push_back(Rectangle(2.0, -2.0, 1.0, 4.0));
+    env.push_back(Rectangle(-3.0, -3.0, 1.25, 2.0));
     PlanarRRSIM sim(robot, env);
 
     // Collision setup. Set the state validity checker using a lambda to pass 'sim' to 'isStateValid'
@@ -40,13 +46,16 @@ int main() {
 
     // 4. Define the start and goal states
     ob::ScopedState<ob::CompoundStateSpace> start(space);
-    start[0] = -M_PI/2;
-    start[1] = -M_PI + 0.3;
+    // start[0] = -M_PI/2;
+    // start[1] = -M_PI + 0.3;
+    start[0] = 2.68;
+    start[1] = -2.86;
 
     ob::ScopedState<ob::CompoundStateSpace> goal(space);
-    goal[0] = -M_PI/2;
-    goal[1] = M_PI - 0.3;
-
+    // goal[0] = -M_PI/2;
+    // goal[1] = M_PI - 0.3;
+    goal[0] = -0.70;
+    goal[1] = 1.73;
     ss.setStartAndGoalStates(start, goal);
 
     // Planner setup and solved
@@ -60,7 +69,7 @@ int main() {
     if (solved) {
         std::cout << "Found solution! Printing it out...!" << std::endl;
 
-        // ss.simplifySolution();
+        ss.simplifySolution();
         ss.getSolutionPath().print(std::cout);
         // ss.getSolutionPath().printAsMatrix(std::cout);
 

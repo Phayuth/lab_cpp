@@ -34,21 +34,26 @@ class PlotterConfig:
 graph = nx.read_graphml("./exompl/build/zzzzz_planner_data.graphml")
 path = np.loadtxt("./exompl/build/zzzzz_path.csv", delimiter=",")
 state = np.loadtxt("./exompl/build/zzzzz_start_goal.csv", delimiter=",")
+colp = np.load("./exompl/build/collisionpoint_exts.npy")
 
 
-def get_graphml_node_as_array(graph):
-    coord = []
-    for i in range(len(graph.nodes)):
-        qstr: str = graph.nodes[f"n{i}"]["coords"]
-        coord.append(qstr.rsplit(","))
-    coordar = np.array(coord, dtype=np.float32)
-    return coordar
 
+# def get_graphml_node_as_array(graph):
+#     coord = []
+#     for i in range(len(graph.nodes)):
+#         qstr: str = graph.nodes[f"n{i}"]["coords"]
+#         coord.append(qstr.rsplit(","))
+#     coordar = np.array(coord, dtype=np.float32)
+#     return coordar
 
 # coordar = get_graphml_node_as_array(graph)
 # plt.plot(coordar[:, 0], coordar[:, 1], linewidth=0, color="darkgray", marker="o", markerfacecolor="darkgray")
 # plt.plot(path[:, 0], path[:, 1], linewidth=3, color="red", marker="o", markerfacecolor="black")
 # plt.show()
+
+# plotting
+plt.figure(figsize=(8,8))
+plt.tight_layout()
 
 # tree
 for u, v in graph.edges:
@@ -96,5 +101,20 @@ plt.plot(
     markersize=PlotterConfig.stateMarkersize,
 )
 
+plt.plot(
+    colp[:, 0],
+    colp[:, 1],
+    color="darkcyan",
+    linewidth=0,
+    marker="o",
+    markerfacecolor="darkcyan",
+    markersize=1.5,
+)
 
+plt.xlim((-2*np.pi, 2*np.pi))
+plt.ylim((-2*np.pi, 2*np.pi))
+plt.axhline(y=np.pi,color="gray", alpha=0.4)
+plt.axhline(y=-np.pi,color="gray", alpha=0.4)
+plt.axvline(x=np.pi,color="gray", alpha=0.4)
+plt.axvline(x=-np.pi,color="gray", alpha=0.4)
 plt.show()

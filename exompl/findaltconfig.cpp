@@ -122,39 +122,34 @@ void test() {
 // int main() {
 //     // test();
 
-//     // Eigen::RowVectorXd q(3);
-//     // q << -1.4, 3.4, 0.0;
+//     // Eigen::RowVectorXd qdeg(6);
+//     // qdeg << -107.49, -64.44, -118.96, 10.21, 92.49, -3.45;
+//     // Eigen::RowVectorXd qrad = qdeg.unaryExpr(&degreesToRadians);
 //     // printf("\nq original:\n");
-//     // std::cout << q << std::endl;
-
-//     // Eigen::RowVectorXd qlimit(3);
-//     // qlimit << 2 * M_PI, M_PI, 2 * M_PI;
-//     // printf("\nq bound:\n");
-//     // std::cout << qlimit << std::endl;
-
-//     // Eigen::MatrixXd qalt = find_alt_config(q, qlimit);
-//     // printf("\n q alt are :\n");
-//     // std::cout << qalt << std::endl;
-
-//     Eigen::RowVectorXd qdeg(6);
-//     qdeg << -107.49, -64.44, -118.96, 10.21, 92.49, -3.45;
-//     Eigen::RowVectorXd qrad = qdeg.unaryExpr(&degreesToRadians);
-//     printf("\nq original:\n");
-//     std::cout << qrad << std::endl;
+//     // std::cout << qrad << std::endl;
 
 //     Eigen::RowVectorXd qlimit(6);
 //     qlimit << 2 * M_PI, 2 * M_PI, M_PI, 2 * M_PI, 2 * M_PI, 2 * M_PI;
 //     printf("\nq bound:\n");
 //     std::cout << qlimit << std::endl;
 
-//     Eigen::MatrixXd qalt = find_alt_config(qrad, qlimit);
+//     // Eigen::MatrixXd qalt = find_alt_config(qrad, qlimit);
+//     // printf("\nqalt \n");
+//     // std::cout << qalt << std::endl;
+
+//     // printf("\nrow wise access \n");
+//     // for (size_t i = 0; i < qalt.rows(); i++) {
+//     //     std::cout << qalt.row(i) << std::endl;
+//     // }
+
+
+//     // -------------------------------------------------
+//     Eigen::RowVectorXd qgoal(6);
+//     qgoal << -1.12+2*M_PI, -1.86, 1.87, 0.0, M_PI/2, 0.0;
+
+//     Eigen::MatrixXd qalt = find_alt_config(qgoal, qlimit);
 //     printf("\nqalt \n");
 //     std::cout << qalt << std::endl;
-
-//     printf("\nrow wise access \n");
-//     for (size_t i = 0; i < qalt.rows(); i++) {
-//         std::cout << qalt.row(i) << std::endl;
-//     }
 
 //     return 0;
 // }

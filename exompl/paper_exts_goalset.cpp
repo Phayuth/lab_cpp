@@ -32,8 +32,14 @@ int main() {
 
     // Simulation setup
     std::vector<Rectangle> env;
-    env.push_back(Rectangle(-2.75, 1.0, 2.0, 1.0));
-    env.push_back(Rectangle(1.5, 2.0, 2.0, 1.0));
+    // ijcas env
+    // env.push_back(Rectangle(-2.75, 1.0, 2.0, 1.0));
+    // env.push_back(Rectangle(1.5, 2.0, 2.0, 1.0));
+
+    // ifac env
+    env.push_back(Rectangle(-0.7, 1.3, 2.0, 2.2));
+    env.push_back(Rectangle(2.0, -2.0, 1.0, 4.0));
+    env.push_back(Rectangle(-3.0, -3.0, 1.25, 2.0));
     PlanarRRSIM sim(robot, env);
 
     // Collision setup. Set the state validity checker using a lambda to pass 'sim' to 'isStateValid'
@@ -42,17 +48,19 @@ int main() {
     });
 
     // Define the start state
-    Eigen::RowVectorXd qstart(2);
+    // Eigen::RowVectorXd qstart(2);
     ob::ScopedState<> start(space);
-    qstart << -M_PI/2, -M_PI + 0.3;
-    for (size_t i = 0; i < qstart.rows(); i++) {
-        start[i] = qstart[i];
-    }
+    // qstart << 2.68, -2.86;
+    // for (size_t i = 0; i < qstart.rows(); i++) {
+    //     start[i] = qstart[i];
+    // }
+    start[0] = 2.68;
+    start[1] = -2.86;
     ss.setStartState(start);
 
     // Define multiple goal states
     Eigen::RowVectorXd qgoal(2);
-    qgoal << -M_PI/2, M_PI - 0.3;
+    qgoal << -0.70, 1.73;
     Eigen::RowVectorXd qlimit(2);
     qlimit << 2 * M_PI, 2 * M_PI;
     Eigen::MatrixXd qgoalalt = find_alt_config(qgoal, qlimit);
@@ -98,7 +106,7 @@ int main() {
     if (solved) {
         std::cout << "Found solution:" << std::endl;
 
-        // ss.simplifySolution();
+        ss.simplifySolution();
         ss.getSolutionPath().print(std::cout);
 
         const og::PathGeometric &path = ss.getSolutionPath();

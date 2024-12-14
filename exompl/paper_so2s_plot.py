@@ -81,7 +81,11 @@ class PlotterConfig:
 graph = nx.read_graphml("./exompl/build/z_planner_data.graphml")
 path = np.loadtxt("./exompl/build/z_path.csv", delimiter=",")
 state = np.loadtxt("./exompl/build/z_start_goal.csv", delimiter=",")
+colp = np.load("./exompl/build/collisionpoint_so2s.npy")
 
+# plotting
+plt.figure(figsize=(8,8))
+plt.tight_layout()
 
 limt2 = np.array([[-2 * np.pi, 2 * np.pi], [-2 * np.pi, 2 * np.pi]])
 # tree
@@ -158,6 +162,16 @@ plt.plot(
     marker=PlotterConfig.stateMarker,
     markerfacecolor=PlotterConfig.stateGoalFaceColor,
     markersize=PlotterConfig.stateMarkersize,
+)
+
+plt.plot(
+    colp[:, 0],
+    colp[:, 1],
+    color="darkcyan",
+    linewidth=0,
+    marker="o",
+    markerfacecolor="darkcyan",
+    markersize=1.5,
 )
 
 plt.xlim((-np.pi, np.pi))
