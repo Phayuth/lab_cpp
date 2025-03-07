@@ -1,8 +1,7 @@
 #include <iostream>
-#include <stdio.h>
+#include <memory>
 
-// basic pointer
-void pointer_tutorial() {
+void pointer() {
     // &variable = to get the address of the variable
     // *address = to get the value inside of address
 
@@ -20,47 +19,41 @@ void pointer_tutorial() {
     std::cout << "Changed value of the Original : " << name << std::endl;
 }
 
-// function to generate and return random numbers
-int *getRandom() {
-    srand((unsigned)time(NULL)); // set the seed
-    static int r[3];
-    r[0] = rand();
-    r[1] = rand();
-    r[2] = rand();
+class MyClass {
+    public:
+        MyClass(int x) : value(x) {
+            std::cout << "MyClass constructor called with value " << value << "\n";
+        }
+        ~MyClass() {
+            std::cout << "MyClass destructor called\n";
+        }
+        int value;
+};
 
-    for (int i = 0; i < 3; ++i) {
-        r[i] = rand();
-        std::cout << r[i] << std::endl;
-    }
-    return r;
-}
-
-// pass array pointer in
-double getAverage(int *arr, int size) {
-    int sum = 0;
-    for (int i = 0; i < size; ++i) {
-        sum += arr[i];
-    }
-    double avg = double(sum) / size;
-    return avg;
-}
-
-void test_getAverage() {
-    int balance[5] = {1000, 2, 3, 17, 50};
-    double avg = getAverage(balance, 5);
-    std::cout << "Average value is: " << avg << std::endl;
+int *getPointer(int &value) {
+    return &value; // returns pointer to the argument
 }
 
 int main() {
-    pointer_tutorial();
+    pointer();
 
-    int *p; // a pointer to an int.
-    p = getRandom();
-    int a = *(p + 0);
-    int b = *(p + 1);
-    std::cout << "First value is :" << a << std::endl;
-    std::cout << "Second value is :" << b << std::endl;
+    // Create a shared_ptr using make_shared
+    std::shared_ptr<MyClass> ptr = std::make_shared<MyClass>(42);
+    // Access members of MyClass via shared_ptr
+    std::cout << "Value: " << ptr->value << "\n";
+    // The object is automatically deleted when the shared_ptr goes out of scope
 
-    // test_getAverage();
+    int x = 10;
+    int *ptr = getPointer(x);
+    *ptr = 20;
+
     return 0;
 }
+
+// In C++, std::make_shared is a function that creates a std::shared_ptr, a type of smart pointer provided by the C++ Standard Library.
+// The std::shared_ptr is a reference-counted smart pointer that automatically manages the lifetime of dynamically allocated objects,
+// ensuring that the object is destroyed when the last std::shared_ptr pointing to it is destroyed.
+
+// std::make_shared simplifies the process of creating std::shared_ptr instances and is more efficient than manually creating std::shared_ptr objects.
+// It allocates both the object and the control block (the part that tracks the reference count) in a single memory allocation,
+// which can improve performance and reduce fragmentation.

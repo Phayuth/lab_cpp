@@ -1,9 +1,9 @@
 cmake_minimum_required (VERSION 2.6)
 
-project (Tutorial) 
+project (Tutorial)
 
-add_library(MathFunctions math_lib.cpp) 
-add_executable(Tutorial tutorial.cpp)
+add_library(math_lib math_lib.cpp)
 
-target_link_libraries(Tutorial MathFunctions)
+add_executable(main main.cpp)
+target_link_libraries(main math_lib)
 

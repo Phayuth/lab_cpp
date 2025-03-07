@@ -4,7 +4,7 @@ project (Tutorial)
 
 include_directories("include/my_math")
 
-add_library(MathFunctions src/my_math/math_lib.cpp)
-add_executable(Tutorial src/tutorial.cpp)
+add_library(math_lib src/my_math/math_lib.cpp)
 
-target_link_libraries(Tutorial MathFunctions)
+add_executable(main src/main.cpp)
+target_link_libraries(main math_lib)
