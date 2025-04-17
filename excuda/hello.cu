@@ -10,7 +10,7 @@ int main(void) {
     return 0;
 }
 
-/*The qualifi er __global__ tells the compiler that the function will be called from the CPU and exe-
+/*The qualifier __global__ tells the compiler that the function will be called from the CPU and exe-
 cuted on the GPU. */
 
 /*Triple angle brackets mark a call from the host thread to the code on the device side. A kernel is
