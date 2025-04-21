@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <ompl/base/spaces/RealVectorStateSpace.h>
 #include <ompl/geometric/SimpleSetup.h>
@@ -10,6 +11,7 @@ namespace og = ompl::geometric;
 bool isStateValid(const ob::State *state) {
     return true;
 }
+
 int main() {
 
     auto space = std::make_shared<ob::RealVectorStateSpace>(2);
@@ -33,18 +35,19 @@ int main() {
 
     auto planner = std::make_shared<og::PRM>(ss.getSpaceInformation());
     ss.setPlanner(planner);
-    planner->constructRoadmap(ob::PlannerTerminationCondition());
-    // planner->expandRoadmap(10.0);
-    std::cout << "expanding roadmap for 10s" << std::endl;
-    ob::PlannerStatus solved = ss.solve(1.0);
 
-    ob::PlannerData data(ss.getSpaceInformation());
+    ob::PlannerStatus solved = ss.solve(10.0);
+
     if (solved) {
         std::cout << "Found!" << std::endl;
 
         ss.getSolutionPath().print(std::cout);
+
+        ob::PlannerData data(ss.getSpaceInformation());
         ss.getPlannerData(data);
-        data.printGraphML(std::cout);
+        std::ofstream file("saved_planner.graphml");
+        data.printGraphML(file);
+        file.close();
 
     } else {
         std::cout << "No Solution!" << std::endl;

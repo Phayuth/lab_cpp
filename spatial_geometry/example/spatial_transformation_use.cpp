@@ -14,5 +14,3 @@ int main() {
 
     return 0;
 }
-
-// g++ -I /usr/include/eigen3 use.cpp spatial_transformation.cpp -o use
