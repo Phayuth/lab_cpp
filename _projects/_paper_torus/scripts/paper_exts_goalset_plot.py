@@ -31,9 +31,9 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml("./exompl/build/zzzzz_planner_data.graphml")
-path = np.loadtxt("./exompl/build/zzzzz_path.csv", delimiter=",")
-state = np.loadtxt("./exompl/build/zzzzz_start_goal.csv", delimiter=",")
+graph = nx.read_graphml("./exompl/build/paper_exts_goalset_planner_data.graphml")
+path = np.loadtxt("./exompl/build/paper_exts_goalset_path.csv", delimiter=",")
+state = np.loadtxt("./exompl/build/paper_exts_goalset_start_goal.csv", delimiter=",")
 colp = np.load("./exompl/build/collisionpoint_exts.npy")
 
 

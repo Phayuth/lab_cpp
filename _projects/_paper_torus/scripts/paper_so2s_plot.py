@@ -78,9 +78,9 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml("./exompl/build/z_planner_data.graphml")
-path = np.loadtxt("./exompl/build/z_path.csv", delimiter=",")
-state = np.loadtxt("./exompl/build/z_start_goal.csv", delimiter=",")
+graph = nx.read_graphml("./exompl/build/paper_so2s_planner_data.graphml")
+path = np.loadtxt("./exompl/build/paper_so2s_path.csv", delimiter=",")
+state = np.loadtxt("./exompl/build/paper_so2s_start_goal.csv", delimiter=",")
 colp = np.load("./exompl/build/collisionpoint_so2s.npy")
 
 # plotting
