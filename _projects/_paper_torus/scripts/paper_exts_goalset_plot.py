@@ -31,28 +31,13 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml("./exompl/build/paper_exts_goalset_planner_data.graphml")
-path = np.loadtxt("./exompl/build/paper_exts_goalset_path.csv", delimiter=",")
-state = np.loadtxt("./exompl/build/paper_exts_goalset_start_goal.csv", delimiter=",")
-colp = np.load("./exompl/build/collisionpoint_exts.npy")
-
-
-
-# def get_graphml_node_as_array(graph):
-#     coord = []
-#     for i in range(len(graph.nodes)):
-#         qstr: str = graph.nodes[f"n{i}"]["coords"]
-#         coord.append(qstr.rsplit(","))
-#     coordar = np.array(coord, dtype=np.float32)
-#     return coordar
-
-# coordar = get_graphml_node_as_array(graph)
-# plt.plot(coordar[:, 0], coordar[:, 1], linewidth=0, color="darkgray", marker="o", markerfacecolor="darkgray")
-# plt.plot(path[:, 0], path[:, 1], linewidth=3, color="red", marker="o", markerfacecolor="black")
-# plt.show()
+graph = nx.read_graphml("./_projects/_paper_torus/build/paper_exts_goalset_planner_data.graphml")
+path = np.loadtxt("./_projects/_paper_torus/build/paper_exts_goalset_path.csv", delimiter=",")
+state = np.loadtxt("./_projects/_paper_torus/build/paper_exts_goalset_start_goal.csv", delimiter=",")
+colp = np.load("./_projects/_paper_torus/build/collisionpoint_exts.npy")
 
 # plotting
-plt.figure(figsize=(8,8))
+plt.figure(figsize=(8, 8))
 plt.tight_layout()
 
 # tree
@@ -111,10 +96,10 @@ plt.plot(
     markersize=1.5,
 )
 
-plt.xlim((-2*np.pi, 2*np.pi))
-plt.ylim((-2*np.pi, 2*np.pi))
-plt.axhline(y=np.pi,color="gray", alpha=0.4)
-plt.axhline(y=-np.pi,color="gray", alpha=0.4)
-plt.axvline(x=np.pi,color="gray", alpha=0.4)
-plt.axvline(x=-np.pi,color="gray", alpha=0.4)
+plt.xlim((-2 * np.pi, 2 * np.pi))
+plt.ylim((-2 * np.pi, 2 * np.pi))
+plt.axhline(y=np.pi, color="gray", alpha=0.4)
+plt.axhline(y=-np.pi, color="gray", alpha=0.4)
+plt.axvline(x=np.pi, color="gray", alpha=0.4)
+plt.axvline(x=-np.pi, color="gray", alpha=0.4)
 plt.show()
