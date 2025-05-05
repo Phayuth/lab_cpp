@@ -1,15 +1,12 @@
-// #include <iostream>
-// #include <ompl/base/spaces/SO2StateSpace.h>
-// #include <ompl/geometric/SimpleSetup.h>
-// #include <ompl/geometric/planners/rrt/RRT.h>
-
 #include <iostream>
 #include <ompl/base/State.h>
 #include <ompl/base/StateSpace.h>
 #include <ompl/base/spaces/SO2StateSpace.h>
+#include <ompl/geometric/SimpleSetup.h>
+#include <ompl/geometric/planners/rrt/RRT.h>
 
 namespace ob = ompl::base;
-// namespace og = ompl::geometric;
+namespace og = ompl::geometric;
 
 int main() {
     // auto space = std::make_shared<ob::CompoundStateSpace>();
@@ -57,13 +54,8 @@ int main() {
     // state->as<ob::SO2StateSpace>();
 
     // Assuming the state is already set (during planning), you can access the SO2 values like this:
-    // const ob::CompoundState *compound_state = state->as<ob::CompoundState>();
-
-    // Step 4: Set values for each SO2 subspace (joint angles in radians)
     auto *compound_state = state->as<ob::CompoundState>();
-    // Setting the value of the first joint (0th subspace)
     compound_state->as<ob::SO2StateSpace::StateType>(0)->value = 1.57; // Joint 1: 90 degrees (π/2 radians)
-    // Setting the value of the second joint (1st subspace)
     compound_state->as<ob::SO2StateSpace::StateType>(1)->value = 3.14; // Joint 2: 180 degrees (π radians)
 
     // Access the values of the first and second SO2 subspaces

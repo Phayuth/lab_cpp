@@ -1,6 +1,5 @@
 #include <fstream>
 #include <iostream>
-#include <ompl/base/PlannerDataStorage.h>
 #include <ompl/base/spaces/RealVectorStateSpace.h>
 #include <ompl/geometric/SimpleSetup.h>
 #include <ompl/geometric/planners/prm/PRM.h>
@@ -34,16 +33,7 @@ int main() {
 
     ss.setStartAndGoalStates(qs, qg);
 
-    // initialize PRM clean
     auto planner = std::make_shared<og::PRM>(ss.getSpaceInformation());
-
-    // initialize PRM from saved data
-    ob::PlannerData loadedData(ss.getSpaceInformation());
-    ob::PlannerDataStorage datastorage;
-    datastorage.load();
-    planner->setplannerdata;
-    auto planner = std::make_shared<og::PRM>();
-
     ss.setPlanner(planner);
 
     ob::PlannerStatus solved = ss.solve(10.0);
@@ -55,7 +45,6 @@ int main() {
 
         ob::PlannerData data(ss.getSpaceInformation());
         ss.getPlannerData(data);
-
         std::ofstream file("saved_planner.graphml");
         data.printGraphML(file);
         file.close();
