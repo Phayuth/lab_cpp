@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-// copy constructor is used to copy the data from one object to another object with the same class like a clone.
+// copy constructor is used to copy the data from one object to another object with
+// the same class like a clone.
 
 class Person {
         friend std::ostream &operator<<(std::ostream &out, const Person &person) {
@@ -23,12 +24,11 @@ class Person {
             printf("Custom constructor for Person is called.\n");
         };
 
-        Person(const Person& p) : firstname(p.firstname), lastname(p.lastname) {
+        Person(const Person &p) : firstname(p.firstname), lastname(p.lastname) {
             printf("Person Copy Constructor is called.\n");
         };
 
-        ~Person() {
-        };
+        ~Person() {};
 
         std::string get_fn() const {
             return firstname;
@@ -44,14 +44,15 @@ class Person {
             this->lastname = lastname;
         }
 
-        void print_info(){
-            printf("%s, %s",firstname.c_str(), lastname.c_str());
+        void print_info() {
+            printf("%s, %s", firstname.c_str(), lastname.c_str());
         }
 };
 
 class Player : public Person {
         friend std::ostream &operator<<(std::ostream &out, const Player &player) {
-            out << "Player : [ game : " << player.game << " names : " << player.get_fn() << " " << player.get_ln() << "]";
+            out << "Player : [ game : " << player.game
+                << " names : " << player.get_fn() << " " << player.get_ln() << "]";
             return out;
         }
 
@@ -59,11 +60,13 @@ class Player : public Person {
         std::string game{"None"};
 
     public:
-        Player(){
+        Player() {
             printf("Default constructor for Player is called.\n");
         };
 
-        Player(const std::string &firstname, const std::string &lastname, const std::string &game) : Person(firstname, lastname) {
+        Player(const std::string &firstname, const std::string &lastname,
+               const std::string &game)
+            : Person(firstname, lastname) {
             this->game = game;
             printf("Custom constructor for Player is called.\n");
         };
@@ -72,22 +75,24 @@ class Player : public Person {
         //     printf("This is wrong. we lost data to initialize Person first.");
         // };
 
-        // Player(const Player& pl) : Person(pl.get_fn(), pl.get_ln()), game(pl.game){
-        //     printf("This is working but not efficient. It copy data and we hate copying data in CPP.");
+        // Player(const Player& pl) : Person(pl.get_fn(), pl.get_ln()),
+        // game(pl.game){
+        //     printf("This is working but not efficient. It copy data and we hate
+        //     copying data in CPP.");
         // };
 
         // copy constructor is here !!!!!!!!!!!!!!!!!!
-        Player(const Player& pl) : Person(pl), game(pl.game){
+        Player(const Player &pl) : Person(pl), game(pl.game) {
             printf("This will use the copy constructor from the Person class");
-            printf("Great! The compiler is smart enough by strip-off data from player source to initialize the person.\n");
+            printf("Great! The compiler is smart enough by strip-off data from "
+                   "player source to initialize the person.\n");
         };
 
         Player(const std::string &game) {
             this->game = game;
         };
 
-        ~Player() {
-        };
+        ~Player() {};
 };
 
 int main(int argc, char const *argv[]) {

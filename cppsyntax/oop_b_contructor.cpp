@@ -14,7 +14,8 @@ class Employee {
             std::cout << "Age - " << Age << std::endl;
         }
 
-        Employee() {} // constructor default empty
+        Employee() {
+        } // constructor default empty
 
         Employee(std::string name, std::string company, int age) { // contructor
             Name = name;
@@ -22,7 +23,8 @@ class Employee {
             Age = age;
         }
 
-        Employee(std::string name, int age) : Name(name), Age(age) { // contructor with initializer
+        Employee(std::string name, int age)
+            : Name(name), Age(age) { // contructor with initializer
         }
 };
 

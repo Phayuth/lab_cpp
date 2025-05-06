@@ -16,7 +16,6 @@ double output_with_return(double x) {
     return x + 5.48;
 }
 
-
 int main(int argc, char const *argv[]) {
     int x;
     output_with_reference(x);

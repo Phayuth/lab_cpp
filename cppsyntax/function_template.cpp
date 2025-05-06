@@ -2,20 +2,18 @@
 #include <iostream>
 
 // template by value
-template <typename T>
-T add(T a, T b) {
+template <typename T> T add(T a, T b) {
     return a + b;
 }
 
 // template by reference
-template <typename T>
-T addref(const T &a, const T &b) {
+template <typename T> T addref(const T &a, const T &b) {
     return a + b;
 }
 
-// template specialization (let compiler know not to do the defualt behaviour of just copying type.)
-template <>
-std::string add<std::string>(std::string a, std::string b) {
+// template specialization (let compiler know not to do the defualt behaviour of
+// just copying type.)
+template <> std::string add<std::string>(std::string a, std::string b) {
     return "Specialized concatenation: " + a + " " + b;
 }
 
@@ -28,7 +26,8 @@ int main(int argc, char const *argv[]) {
     res = add<int>(21, 11);
     printf("the result is : %i\n", res);
 
-    // this can make the compiler avoid error when difference type is used, by implicit conversion
+    // this can make the compiler avoid error when difference type is used, by
+    // implicit conversion
     double d;
     d = add<double>(11, 12);
     printf("the result is : %f\n", d);

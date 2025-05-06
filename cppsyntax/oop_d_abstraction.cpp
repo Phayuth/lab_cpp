@@ -3,7 +3,8 @@
 #include <iostream>
 
 class AbstractEmployee {
-        // abstraction : declare a virtual function so that the any class that inherent from this main class will need to implement its own method
+        // abstraction : declare a virtual function so that the any class that
+        // inherent from this main class will need to implement its own method
         virtual void AskForPromotion() = 0;
 };
 

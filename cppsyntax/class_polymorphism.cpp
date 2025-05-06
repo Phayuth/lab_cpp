@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <memory>
+#include <string>
 
 class Shape {
     public:
@@ -20,11 +20,17 @@ class Oval : public Shape {
         double xr;
         double yr;
 
-        Oval(const std::string &desc, double xr, double yr) : Shape(desc), xr(xr), yr(yr) {
+        Oval(const std::string &desc, double xr, double yr)
+            : Shape(desc), xr(xr), yr(yr) {
         }
 
-        virtual void draw() const override{ // specify override to make sure the method is override from the base class by the compiler
-            printf("Oval [%s] is drawn. Additional Info: %f, %f \n", desc.c_str(), xr, yr);
+        virtual void
+        draw() const override { // specify override to make sure the method is
+                                // override from the base class by the compiler
+            printf("Oval [%s] is drawn. Additional Info: %f, %f \n",
+                   desc.c_str(),
+                   xr,
+                   yr);
         }
 };
 
@@ -69,11 +75,10 @@ int main(int argc, char const *argv[]) {
     shape_ptr->draw();
 
     // Base reference
-    // The problem is that assigning derived class objects to a base class reference slices the object,
-    // losing the derived class information because not enough space.
-    // To fix this, you should use pointers instead of references for polymorphic behavior.
-    // DONT USE THIS.
-    // Shape &shape_ref = s1;
+    // The problem is that assigning derived class objects to a base class
+    // reference slices the object, losing the derived class information because
+    // not enough space. To fix this, you should use pointers instead of references
+    // for polymorphic behavior. DONT USE THIS. Shape &shape_ref = s1;
     // shape_ref.draw();
     // shape_ref = o1;
     // shape_ref.draw();
@@ -86,7 +91,8 @@ int main(int argc, char const *argv[]) {
 
     draw_all(shape_ptr);
 
-    Shape sliceoff_data[]{s1, o1, c1}; // this will slice off your data and lost forever. because we have implicit copy.
+    Shape sliceoff_data[]{s1, o1, c1}; // this will slice off your data and lost
+                                       // forever. because we have implicit copy.
 
     Shape *shape_col[]{&s1, &o1, &c1};
     for (Shape *s_ptr : shape_col) {
@@ -94,7 +100,9 @@ int main(int argc, char const *argv[]) {
     }
 
     // using smart pointer
-    std::shared_ptr<Shape> shape_smartptr[] {std::make_shared<Shape>(s1), std::make_shared<Oval>(o1), std::make_shared<Circle>(c1)};
+    std::shared_ptr<Shape> shape_smartptr[]{std::make_shared<Shape>(s1),
+                                            std::make_shared<Oval>(o1),
+                                            std::make_shared<Circle>(c1)};
     for (std::shared_ptr<Shape> s_ptr : shape_smartptr) {
         s_ptr->draw();
     }

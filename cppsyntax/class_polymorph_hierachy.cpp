@@ -17,10 +17,12 @@ class Walking : public Animal {
         Walking(std::string &name) : Animal(name) {};
 
         virtual void sound() const override {
-            std::cout << "Walking animal [" << name << "] is making sound." << std::endl;
+            std::cout << "Walking animal [" << name << "] is making sound."
+                      << std::endl;
         };
         virtual void walk() const {
-            std::cout << "Walking animal [" << name << "] is walking." << std::endl;
+            std::cout << "Walking animal [" << name << "] is walking."
+                      << std::endl;
         };
 
         ~Walking() {};
@@ -31,7 +33,8 @@ class Flying : public Animal {
         Flying(std::string &name) : Animal(name) {};
 
         virtual void sound() const override {
-            std::cout << "Flying animal [" << name << "] is making sound." << std::endl;
+            std::cout << "Flying animal [" << name << "] is making sound."
+                      << std::endl;
         };
 
         virtual void fly() const {
@@ -48,7 +51,8 @@ class Dog : public Walking {
             std::cout << "Dog [" << name << "] is barking." << std::endl;
         };
         virtual void walk() const {
-            std::cout << "Dog [" << name << "] is walking with 4 feet." << std::endl;
+            std::cout << "Dog [" << name << "] is walking with 4 feet."
+                      << std::endl;
         };
         ~Dog() {};
 };
@@ -60,7 +64,8 @@ class Cat : public Walking {
             std::cout << "Cat [" << name << "] is meowing." << std::endl;
         };
         virtual void walk() const {
-            std::cout << "Cat [" << name << "] is walking with 4 feet." << std::endl;
+            std::cout << "Cat [" << name << "] is walking with 4 feet."
+                      << std::endl;
         };
         ~Cat() {};
 };
@@ -72,7 +77,8 @@ class Crow : public Flying {
             std::cout << "Crow [" << name << "] is cawing." << std::endl;
         };
         virtual void fly() const {
-            std::cout << "Crow [" << name << "] is flying with 2 wings." << std::endl;
+            std::cout << "Crow [" << name << "] is flying with 2 wings."
+                      << std::endl;
         };
         ~Crow() {};
 };
@@ -84,7 +90,8 @@ class Chicken : public Flying {
             std::cout << "Chicken [" << name << "] is clucking." << std::endl;
         };
         virtual void fly() const {
-            std::cout << "Chicken [" << name << "] is flying with 2 wings." << std::endl;
+            std::cout << "Chicken [" << name << "] is flying with 2 wings."
+                      << std::endl;
         };
         ~Chicken() {};
 };

@@ -9,7 +9,8 @@ class Person {
             return out;
         }
 
-    protected: // the derived class can now access this variable directly without getter
+    protected
+        : // the derived class can now access this variable directly without getter
         std::string firstname{"None"};
         std::string lastname{"None"};
 
@@ -19,8 +20,7 @@ class Person {
             this->firstname = firstname;
             this->lastname = lastname;
         };
-        ~Person() {
-        };
+        ~Person() {};
 
         std::string get_fn() const {
             return firstname;
@@ -39,7 +39,9 @@ class Person {
 
 class Player : public Person {
         friend std::ostream &operator<<(std::ostream &out, const Player &player) {
-            out << "Player : [ game : " << player.game << " names : " << player.firstname << " " << player.lastname << "]";
+            out << "Player : [ game : " << player.game
+                << " names : " << player.firstname << " " << player.lastname
+                << "]";
             return out;
         }
 
@@ -49,7 +51,8 @@ class Player : public Person {
     public:
         Player() = default;
 
-        Player(const std::string &firstname, const std::string &lastname, const std::string &game) {
+        Player(const std::string &firstname, const std::string &lastname,
+               const std::string &game) {
             this->firstname = firstname;
             this->lastname = lastname;
             this->game = game;
@@ -59,8 +62,7 @@ class Player : public Person {
             this->game = game;
         };
 
-        ~Player() {
-        };
+        ~Player() {};
 };
 
 int main(int argc, char const *argv[]) {

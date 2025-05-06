@@ -13,8 +13,11 @@ namespace og = ompl::geometric;
 
 bool isStateValid(const ob::State *state, PlanarRRSIM &sim);
 void savePathToFile(const og::PathGeometric &path, const std::string &filename);
-void savePlannerData(const ompl::base::PlannerPtr &planner, const ompl::base::SpaceInformationPtr &si, const std::string &filename);
-void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss, const std::string &filename);
+void savePlannerData(const ompl::base::PlannerPtr &planner,
+                     const ompl::base::SpaceInformationPtr &si,
+                     const std::string &filename);
+void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
+                      const std::string &filename);
 
 int main() {
     // load YAML configurations
@@ -28,7 +31,10 @@ int main() {
     // Simulation setup
     std::vector<Rectangle> env;
     for (const auto &rect : config["env"]["rectangles"]) {
-        env.push_back(Rectangle(rect[0].as<double>(), rect[1].as<double>(), rect[2].as<double>(), rect[3].as<double>()));
+        env.push_back(Rectangle(rect[0].as<double>(),
+                                rect[1].as<double>(),
+                                rect[2].as<double>(),
+                                rect[3].as<double>()));
     }
     PlanarRRSIM sim(robot, env);
 
@@ -40,10 +46,10 @@ int main() {
     space->setBounds(bounds);
     og::SimpleSetup ss(space);
 
-    // Collision setup. Set the state validity checker using a lambda to pass 'sim' to 'isStateValid'
-    ss.setStateValidityChecker([&sim](const ob::State *state) {
-        return isStateValid(state, sim);
-    });
+    // Collision setup. Set the state validity checker using a lambda to pass
+    // 'sim' to 'isStateValid'
+    ss.setStateValidityChecker(
+        [&sim](const ob::State *state) { return isStateValid(state, sim); });
 
     // start and goal states
     ob::ScopedState<> start(space);
@@ -60,7 +66,8 @@ int main() {
     planner->setRange(config["range"].as<double>());
     planner->setGoalBias(config["bias"].as<double>());
     ss.setPlanner(planner);
-    ob::PlannerStatus solved = ss.solve(config["time_limit"].as<double>()); // within a time limit
+    ob::PlannerStatus solved =
+        ss.solve(config["time_limit"].as<double>()); // within a time limit
 
     if (solved) {
         std::cout << "Found solution!" << std::endl;
@@ -72,10 +79,16 @@ int main() {
         ss.getSolutionPath().print(std::cout);
 
         const og::PathGeometric &path = ss.getSolutionPath();
-        auto space_information(std::make_shared<ompl::base::SpaceInformation>(space));
-        savePathToFile(path, config["path_save_path"].as<std::string>() + ".csv");
-        savePlannerData(planner, space_information, config["path_save_planner_data"].as<std::string>() + ".graphml");
-        saveStartAndGoal(ss, config["path_save_start_goal"].as<std::string>() + ".csv");
+        auto space_information(
+            std::make_shared<ompl::base::SpaceInformation>(space));
+        savePathToFile(path,
+                       config["path_save_path"].as<std::string>() + ".csv");
+        savePlannerData(planner,
+                        space_information,
+                        config["path_save_planner_data"].as<std::string>() +
+                            ".graphml");
+        saveStartAndGoal(
+            ss, config["path_save_start_goal"].as<std::string>() + ".csv");
     } else {
         std::cout << "No solution found." << std::endl;
     }
@@ -84,7 +97,8 @@ int main() {
 }
 
 bool isStateValid(const ob::State *state, PlanarRRSIM &sim) {
-    const ob::RealVectorStateSpace::StateType *realState = state->as<ob::RealVectorStateSpace::StateType>();
+    const ob::RealVectorStateSpace::StateType *realState =
+        state->as<ob::RealVectorStateSpace::StateType>();
     double theta1 = realState->values[0];
     double theta2 = realState->values[1];
     // Check for collisions using the sim object
@@ -94,7 +108,8 @@ bool isStateValid(const ob::State *state, PlanarRRSIM &sim) {
     return !c;
 }
 
-void savePathToFile(const og::PathGeometric &path, const std::string &filename) {
+void savePathToFile(const og::PathGeometric &path,
+                    const std::string &filename) {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Unable to open file: " << filename << std::endl;
@@ -103,7 +118,8 @@ void savePathToFile(const og::PathGeometric &path, const std::string &filename) 
 
     for (std::size_t i = 0; i < path.getStateCount(); ++i) {
         const ob::State *state = path.getState(i);
-        const auto *realState = state->as<ob::RealVectorStateSpace::StateType>();
+        const auto *realState =
+            state->as<ob::RealVectorStateSpace::StateType>();
         double theta1 = realState->values[0];
         double theta2 = realState->values[1];
         file << theta1 << "," << theta2 << std::endl;
@@ -113,7 +129,9 @@ void savePathToFile(const og::PathGeometric &path, const std::string &filename) 
     std::cout << "Path saved to " << filename << std::endl;
 }
 
-void savePlannerData(const ompl::base::PlannerPtr &planner, const ompl::base::SpaceInformationPtr &si, const std::string &filename) {
+void savePlannerData(const ompl::base::PlannerPtr &planner,
+                     const ompl::base::SpaceInformationPtr &si,
+                     const std::string &filename) {
     ompl::base::PlannerData plannerData(si);
     planner->getPlannerData(plannerData);
 
@@ -123,17 +141,22 @@ void savePlannerData(const ompl::base::PlannerPtr &planner, const ompl::base::Sp
     file.close();
 }
 
-void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss, const std::string &filename) {
+void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
+                      const std::string &filename) {
     // Get the start and goal states
     const ob::State *startState = ss.getProblemDefinition()->getStartState(0);
-    const ob::GoalState *goalState = ss.getProblemDefinition()->getGoal()->as<ob::GoalState>();
+    const ob::GoalState *goalState =
+        ss.getProblemDefinition()->getGoal()->as<ob::GoalState>();
 
     std::ofstream file(filename);
 
-    const double *start_coords = startState->as<ob::RealVectorStateSpace::StateType>()->values;
+    const double *start_coords =
+        startState->as<ob::RealVectorStateSpace::StateType>()->values;
     file << start_coords[0] << "," << start_coords[1] << std::endl;
 
-    const double *goal_coords = goalState->getState()->as<ob::RealVectorStateSpace::StateType>()->values;
+    const double *goal_coords = goalState->getState()
+                                    ->as<ob::RealVectorStateSpace::StateType>()
+                                    ->values;
     file << goal_coords[0] << "," << goal_coords[1] << std::endl;
 
     file.close();

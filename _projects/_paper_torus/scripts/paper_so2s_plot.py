@@ -84,7 +84,7 @@ state = np.loadtxt("./_projects/_paper_torus/build/paper_so2s_start_goal.csv", d
 colp = np.load("./_projects/_paper_torus/build/collisionpoint_so2s.npy")
 
 # plotting
-plt.figure(figsize=(8,8))
+plt.figure(figsize=(8, 8))
 plt.tight_layout()
 
 limt2 = np.array([[-2 * np.pi, 2 * np.pi], [-2 * np.pi, 2 * np.pi]])

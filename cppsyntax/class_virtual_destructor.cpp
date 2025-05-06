@@ -5,7 +5,8 @@
 
 class Animal {
     public:
-        // specify virtual to allow polymorphism (dynamically binding) !!!!!!!!!!!!!!
+        // specify virtual to allow polymorphism (dynamically binding)
+        // !!!!!!!!!!!!!!
         virtual ~Animal() {
             std::cout << "Animal Destructor" << std::endl;
         }

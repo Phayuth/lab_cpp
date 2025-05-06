@@ -3,7 +3,8 @@
 #include <iostream>
 
 class Employee { // create class name Employee
-    public:      // access modifier. make property in class public instead of private , protected
+    public: // access modifier. make property in class public instead of private ,
+            // protected
         std::string Name;
         std::string Company;
         int Age;

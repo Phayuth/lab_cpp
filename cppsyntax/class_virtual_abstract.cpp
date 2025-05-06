@@ -1,7 +1,7 @@
 #include <iostream>
 // Abstract class is a class that cannot be instantiated.
-// It is used to define an interface and force the derived class to implement the methods.
-// use = 0 to make a method pure virtual.
+// It is used to define an interface and force the derived class to implement the
+// methods. use = 0 to make a method pure virtual.
 
 class Shape {
     public:
@@ -57,7 +57,8 @@ class Rectangle : public Shape {
 };
 
 int main(int argc, char const *argv[]) {
-    // Shape *s = new Shape(); // error: cannot declare variable ‘s’ to be of abstract type ‘Shape’
+    // Shape *s = new Shape(); // error: cannot declare variable ‘s’ to be of
+    // abstract type ‘Shape’
 
     Circle c(2.0);
     Rectangle r(2.0, 3.0);

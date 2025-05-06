@@ -57,17 +57,21 @@ class Employee {
         }
 };
 
-class Developer : public Employee { // must declare public to expose method from super class, otherwise it is private by default
+class Developer
+    : public Employee { // must declare public to expose method from super class,
+                        // otherwise it is private by default
 
     private:
         std::string ProgrammingLanguage;
 
     public:
-        Developer(std::string name, std::string company, int age, std::string programmingLanguage) : Employee(name, company, age) {
+        Developer(std::string name, std::string company, int age,
+                  std::string programmingLanguage)
+            : Employee(name, company, age) {
             ProgrammingLanguage = programmingLanguage;
         }
 
-        std::string getProgLang(){
+        std::string getProgLang() {
             return ProgrammingLanguage;
         }
 };
@@ -78,7 +82,6 @@ int main() {
     employee1.setAge(21);
     std::cout << employee1.getName() << " is " << employee1.getAge() << std::endl;
     employee1.AskForPromotion();
-
 
     Developer dev1("Nobby-", "BCK", 25, "CPP");
     dev1.IntroduceYourself();

@@ -1,5 +1,6 @@
 #include <iostream>
-// final keyword is used to prevent the method to be overridden as it is the final implementation of the method.
+// final keyword is used to prevent the method to be overridden as it is the final
+// implementation of the method.
 
 class Shape {
     public:
@@ -27,7 +28,8 @@ class Ellipse final : public Shape {
         double yr;
         static int count;
 
-        Ellipse(const std::string &desc, double xr, double yr) : Shape(desc), xr(xr), yr(yr) {
+        Ellipse(const std::string &desc, double xr, double yr)
+            : Shape(desc), xr(xr), yr(yr) {
             count++;
         }
 
@@ -47,7 +49,8 @@ class Ellipse final : public Shape {
 //         double zr;
 //         static int count;
 
-//         Ellipsoid(const std::string &desc, double xr, double yr, double zr) : Ellipse(desc, xr, yr), zr(zr) {
+//         Ellipsoid(const std::string &desc, double xr, double yr, double zr) :
+//         Ellipse(desc, xr, yr), zr(zr) {
 //             count++;
 //         }
 // };

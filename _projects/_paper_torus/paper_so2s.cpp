@@ -13,8 +13,11 @@ namespace og = ompl::geometric;
 
 bool isStateValid(const ob::State *state, PlanarRRSIM &sim);
 void savePathToFile(const og::PathGeometric &path, const std::string &filename);
-void savePlannerData(const ompl::base::PlannerPtr &planner, const ompl::base::SpaceInformationPtr &si, const std::string &filename);
-void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss, const std::string &filename);
+void savePlannerData(const ompl::base::PlannerPtr &planner,
+                     const ompl::base::SpaceInformationPtr &si,
+                     const std::string &filename);
+void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
+                      const std::string &filename);
 
 int main() {
     // load YAML configurations
@@ -28,20 +31,27 @@ int main() {
     // Simulation setup
     std::vector<Rectangle> env;
     for (const auto &rect : config["env"]["rectangles"]) {
-        env.push_back(Rectangle(rect[0].as<double>(), rect[1].as<double>(), rect[2].as<double>(), rect[3].as<double>()));
+        env.push_back(Rectangle(rect[0].as<double>(),
+                                rect[1].as<double>(),
+                                rect[2].as<double>(),
+                                rect[3].as<double>()));
     }
     PlanarRRSIM sim(robot, env);
 
     // Planning space setup
-    auto space = std::make_shared<ob::CompoundStateSpace>();        // each joint represented by SO2
-    space->addSubspace(std::make_shared<ob::SO2StateSpace>(), 1.0); // First joint with weight of 1.0
-    space->addSubspace(std::make_shared<ob::SO2StateSpace>(), 1.0); // Second joint
+    auto space =
+        std::make_shared<ob::CompoundStateSpace>(); // each joint represented by
+                                                    // SO2
+    space->addSubspace(std::make_shared<ob::SO2StateSpace>(),
+                       1.0); // First joint with weight of 1.0
+    space->addSubspace(std::make_shared<ob::SO2StateSpace>(),
+                       1.0); // Second joint
     og::SimpleSetup ss(space);
 
-    // Collision setup. Set the state validity checker using a lambda to pass 'sim' to 'isStateValid'
-    ss.setStateValidityChecker([&sim](const ob::State *state) {
-        return isStateValid(state, sim);
-    });
+    // Collision setup. Set the state validity checker using a lambda to pass
+    // 'sim' to 'isStateValid'
+    ss.setStateValidityChecker(
+        [&sim](const ob::State *state) { return isStateValid(state, sim); });
 
     // start and goal states
     ob::ScopedState<ob::CompoundStateSpace> start(space);
@@ -70,10 +80,16 @@ int main() {
         ss.getSolutionPath().printAsMatrix(std::cout);
 
         const og::PathGeometric &path = ss.getSolutionPath();
-        auto space_information(std::make_shared<ompl::base::SpaceInformation>(space));
-        savePathToFile(path, config["path_save_path"].as<std::string>() + ".csv");
-        savePlannerData(planner, space_information, config["path_save_planner_data"].as<std::string>() + ".graphml");
-        saveStartAndGoal(ss, config["path_save_start_goal"].as<std::string>() + ".csv");
+        auto space_information(
+            std::make_shared<ompl::base::SpaceInformation>(space));
+        savePathToFile(path,
+                       config["path_save_path"].as<std::string>() + ".csv");
+        savePlannerData(planner,
+                        space_information,
+                        config["path_save_planner_data"].as<std::string>() +
+                            ".graphml");
+        saveStartAndGoal(
+            ss, config["path_save_start_goal"].as<std::string>() + ".csv");
     } else {
         std::cout << "No solution found." << std::endl;
     }
@@ -90,7 +106,8 @@ bool isStateValid(const ob::State *state, PlanarRRSIM &sim) {
     return !c;
 }
 
-void savePathToFile(const og::PathGeometric &path, const std::string &filename) {
+void savePathToFile(const og::PathGeometric &path,
+                    const std::string &filename) {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Unable to open file: " << filename << std::endl;
@@ -101,8 +118,10 @@ void savePathToFile(const og::PathGeometric &path, const std::string &filename) 
         // Extract joint angles (SO2 states)
         const ob::State *state = path.getState(i);
         const auto *compoundState = state->as<ob::CompoundState>();
-        double joint1 = compoundState->as<ob::SO2StateSpace::StateType>(0)->value;
-        double joint2 = compoundState->as<ob::SO2StateSpace::StateType>(1)->value;
+        double joint1 =
+            compoundState->as<ob::SO2StateSpace::StateType>(0)->value;
+        double joint2 =
+            compoundState->as<ob::SO2StateSpace::StateType>(1)->value;
         file << joint1 << "," << joint2 << std::endl;
     }
 
@@ -110,7 +129,9 @@ void savePathToFile(const og::PathGeometric &path, const std::string &filename) 
     std::cout << "Path saved to " << filename << std::endl;
 }
 
-void savePlannerData(const ompl::base::PlannerPtr &planner, const ompl::base::SpaceInformationPtr &si, const std::string &filename) {
+void savePlannerData(const ompl::base::PlannerPtr &planner,
+                     const ompl::base::SpaceInformationPtr &si,
+                     const std::string &filename) {
     ompl::base::PlannerData plannerData(si);
     planner->getPlannerData(plannerData);
 
@@ -120,7 +141,8 @@ void savePlannerData(const ompl::base::PlannerPtr &planner, const ompl::base::Sp
     file.close();
 }
 
-void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss, const std::string &filename) {
+void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
+                      const std::string &filename) {
     // Get the start and goal states
     const ob::State *startState = ss.getProblemDefinition()->getStartState(0);
 

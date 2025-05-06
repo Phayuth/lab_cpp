@@ -34,7 +34,8 @@ class Dog : public Walking {
         }
 };
 
-// usually, dynamic_cast is made into a function to avoid the need to check the validity of the cast.
+// usually, dynamic_cast is made into a function to avoid the need to check the
+// validity of the cast.
 void sound(Animal *a) {
     Dog *d = dynamic_cast<Dog *>(a);
     if (d) {
@@ -46,7 +47,8 @@ void sound(Animal *a) {
 
 int main(int argc, char const *argv[]) {
     Animal *a = new Dog();
-    // a->make_sound(); compile error, the base class does not have make_sound method.
+    // a->make_sound(); compile error, the base class does not have make_sound
+    // method.
 
     // downcasting
     Dog *ptr = dynamic_cast<Dog *>(a);

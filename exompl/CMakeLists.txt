@@ -18,5 +18,6 @@ target_link_libraries(test_r6s_rrtstar PUBLIC ompl)
 add_executable(test_so2 test_so2.cpp)
 target_link_libraries(test_so2 PUBLIC ompl)
 
+find_package(Boost REQUIRED COMPONENTS serialization)
 add_executable(test_r2s_prm test_r2s_prm.cpp)
-target_link_libraries(test_r2s_prm PUBLIC ompl)
+target_link_libraries(test_r2s_prm PUBLIC ompl Boost::serialization)

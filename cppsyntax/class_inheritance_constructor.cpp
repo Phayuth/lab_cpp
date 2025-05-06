@@ -22,8 +22,7 @@ class Person {
             printf("Custom constructor for Person is called.\n");
         };
 
-        ~Person() {
-        };
+        ~Person() {};
 
         std::string get_fn() const {
             return firstname;
@@ -42,7 +41,8 @@ class Person {
 
 class Player : public Person {
         friend std::ostream &operator<<(std::ostream &out, const Player &player) {
-            out << "Player : [ game : " << player.game << " names : " << player.get_fn() << " " << player.get_ln() << "]";
+            out << "Player : [ game : " << player.game
+                << " names : " << player.get_fn() << " " << player.get_ln() << "]";
             return out;
         }
 
@@ -50,11 +50,13 @@ class Player : public Person {
         std::string game{"None"};
 
     public:
-        Player(){
+        Player() {
             printf("Default constructor for Player is called.\n");
         };
 
-        Player(const std::string &firstname, const std::string &lastname, const std::string &game) : Person(firstname, lastname) {
+        Player(const std::string &firstname, const std::string &lastname,
+               const std::string &game)
+            : Person(firstname, lastname) {
             this->game = game;
             printf("Custom constructor for Player is called.\n");
         };
@@ -63,8 +65,7 @@ class Player : public Person {
             this->game = game;
         };
 
-        ~Player() {
-        };
+        ~Player() {};
 };
 
 int main(int argc, char const *argv[]) {

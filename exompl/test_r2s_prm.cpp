@@ -13,6 +13,25 @@ bool isStateValid(const ob::State *state) {
     return true;
 }
 
+void save_to_storage(ob::PlannerDataStorage &datastorage, ob::PlannerData &data,
+                     std::string &filename) {
+    datastorage.store(data, "stored_with_storage");
+}
+
+void load_from_storage(ob::PlannerDataStorage &datastorage,
+                       ob::PlannerData &data, std::string &filename) {
+    datastorage.load("stored_with_sorage", data);
+}
+
+void build_roadmap() {
+}
+
+void save_to_graphml(ob::PlannerData &data, std::string &filename) {
+    std::ofstream file(filename + ".graphml");
+    data.printGraphML(file);
+    file.close();
+}
+
 int main() {
 
     auto space = std::make_shared<ob::RealVectorStateSpace>(2);
@@ -36,18 +55,12 @@ int main() {
 
     // initialize PRM clean
     auto planner = std::make_shared<og::PRM>(ss.getSpaceInformation());
-
-    // initialize PRM from saved data
-    ob::PlannerData loadedData(ss.getSpaceInformation());
-    ob::PlannerDataStorage datastorage;
-    datastorage.load();
-    planner->setplannerdata;
-    auto planner = std::make_shared<og::PRM>();
-
     ss.setPlanner(planner);
 
-    ob::PlannerStatus solved = ss.solve(10.0);
+    // storage
+    ob::PlannerDataStorage datastorage;
 
+    ob::PlannerStatus solved = ss.solve(10.0);
     if (solved) {
         std::cout << "Found!" << std::endl;
 
@@ -55,10 +68,6 @@ int main() {
 
         ob::PlannerData data(ss.getSpaceInformation());
         ss.getPlannerData(data);
-
-        std::ofstream file("saved_planner.graphml");
-        data.printGraphML(file);
-        file.close();
 
     } else {
         std::cout << "No Solution!" << std::endl;

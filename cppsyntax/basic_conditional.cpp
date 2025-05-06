@@ -16,7 +16,8 @@ int main(int argc, char const *argv[]) {
         break;
     }
 
-    // ternary condition = if condition is true -> assign option 1, if false -> assign option 2. option 1 and 2 must have the same data type
+    // ternary condition = if condition is true -> assign option 1, if false ->
+    // assign option 2. option 1 and 2 must have the same data type
     auto result = (50 == 50) ? true : false;
     std::cout << result << std::endl;
 

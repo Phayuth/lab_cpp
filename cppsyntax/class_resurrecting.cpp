@@ -17,8 +17,7 @@ class Person {
             this->firstname = firstname;
             this->lastname = lastname;
         };
-        ~Person() {
-        };
+        ~Person() {};
 
         std::string get_fn() const {
             return firstname;
@@ -37,7 +36,8 @@ class Person {
 
 class Player : private Person {
         friend std::ostream &operator<<(std::ostream &out, const Player &player) {
-            out << "Player : [ game : " << player.game << " names : " << player.get_fn() << " " << player.get_ln() << "]";
+            out << "Player : [ game : " << player.game
+                << " names : " << player.get_fn() << " " << player.get_ln() << "]";
             return out;
         }
 
@@ -46,7 +46,8 @@ class Player : private Person {
 
     public:
         Player() = default;
-        Player(const std::string &firstname, const std::string &lastname, const std::string &game) {
+        Player(const std::string &firstname, const std::string &lastname,
+               const std::string &game) {
             set_fn(firstname);
             set_ln(lastname);
             this->game = game;
@@ -55,8 +56,7 @@ class Player : private Person {
             this->game = game;
         };
 
-        ~Player() {
-        };
+        ~Player() {};
 
         using Person::set_fn;
         using Person::set_ln;

@@ -26,7 +26,8 @@ class Ellipse : public Shape {
         double yr;
         static int count;
 
-        Ellipse(const std::string &desc, double xr, double yr) : Shape(desc), xr(xr), yr(yr) {
+        Ellipse(const std::string &desc, double xr, double yr)
+            : Shape(desc), xr(xr), yr(yr) {
             count++;
         }
 

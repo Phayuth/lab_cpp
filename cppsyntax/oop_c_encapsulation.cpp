@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-class Employee { // create class name Employee, in private, the data is encapsulated and hidden and only access with public setter and getter
+class Employee { // create class name Employee, in private, the data is
+                 // encapsulated and hidden and only access with public setter and
+                 // getter
 
     private: // make property in class private
         std::string Name;

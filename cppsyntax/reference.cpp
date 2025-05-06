@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <string>
 
-// A reference variable is a "reference" to an existing variable, and it is created with the & operator
-// The & operator used for create a reference variable.
-// But it can also be used to get the memory address of a variable;
+// A reference variable is a "reference" to an existing variable, and it is created
+// with the & operator The & operator used for create a reference variable. But it
+// can also be used to get the memory address of a variable;
 
-// References and Pointers give you the ability to manipulate the data in the computer memory
-// which can reduce the code and improve the performance.
-// The memory address is in hexadecimal form (0x).
+// References and Pointers give you the ability to manipulate the data in the
+// computer memory which can reduce the code and improve the performance. The
+// memory address is in hexadecimal form (0x).
 
 void reference() {
     std::string name = "Johnyuth";

@@ -15,7 +15,8 @@ class Cylinder {
         }
 
         void show_large_data() {
-            printf("Large data is integer : %i\n", *large_data_i_dont_want_to_copy);
+            printf("Large data is integer : %i\n",
+                   *large_data_i_dont_want_to_copy);
         }
 
         // default contructor empty parameter
@@ -28,18 +29,21 @@ class Cylinder {
         }
 
         // constructor with pointer
-        Cylinder(double radius_param, double height_param, int large_data_i_dont_want_to_copy_param) {
+        Cylinder(double radius_param, double height_param,
+                 int large_data_i_dont_want_to_copy_param) {
             radius = radius_param;
             height = height_param;
 
-            std::cout << "large now is nullptr: " << large_data_i_dont_want_to_copy << std::endl;
+            std::cout << "large now is nullptr: " << large_data_i_dont_want_to_copy
+                      << std::endl;
 
             // first we create a heap memory to store `int` data
             large_data_i_dont_want_to_copy = new int;
             // then we set that pointer to store an address of the parameter
             *large_data_i_dont_want_to_copy = large_data_i_dont_want_to_copy_param;
 
-            std::cout << "large now is point to some address : " << large_data_i_dont_want_to_copy << std::endl;
+            std::cout << "large now is point to some address : "
+                      << large_data_i_dont_want_to_copy << std::endl;
         }
 
         // destructor
@@ -50,7 +54,8 @@ class Cylinder {
             delete large_data_i_dont_want_to_copy;
             large_data_i_dont_want_to_copy = nullptr;
 
-            std::cout << "large now is deleted and setted back to nullptr: " << large_data_i_dont_want_to_copy << std::endl;
+            std::cout << "large now is deleted and setted back to nullptr: "
+                      << large_data_i_dont_want_to_copy << std::endl;
         }
 
         // setter getter

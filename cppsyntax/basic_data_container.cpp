@@ -28,7 +28,10 @@ int main() {
 
     printf("-------------------C++ array--------------------\n");
     std::array<int, 6> ar = {1, 3, 4, 5, 6, 7};
-    printf("Get value from c++ class array %i, %i, %i\n", ar.at(3), ar[3], std::get<3>(ar));
+    printf("Get value from c++ class array %i, %i, %i\n",
+           ar.at(3),
+           ar[3],
+           std::get<3>(ar));
     printf("Front and back member function %i, %i\n", ar.front(), ar.back());
     printf("Array Properties : %lu, %lu\n", ar.size(), ar.max_size());
 
@@ -37,7 +40,8 @@ int main() {
     myMap["one"] = 1; // Insert key-value pairs
     myMap["two"] = 2;
     myMap["three"] = 3;
-    std::cout << "Value for key 'two': " << myMap["two"] << std::endl; // Access values using keys
+    std::cout << "Value for key 'two': " << myMap["two"]
+              << std::endl; // Access values using keys
     for (const auto &pair : myMap) {
         printf("Key: %s, Value: %i\n", pair.first.c_str(), pair.second);
     }
@@ -55,11 +59,17 @@ int main() {
     h1.hp = 500.99;
     h1.heroName = "Stan";
     h1.isCarry = true;
-    printf("Struct are [%i], [%f], [%s], [%i]", h1.id, h1.hp, h1.heroName.c_str(), h1.isCarry);
+    printf("Struct are [%i], [%f], [%s], [%i]",
+           h1.id,
+           h1.hp,
+           h1.heroName.c_str(),
+           h1.isCarry);
 
     printf("--------------------Tuple----------------------\n");
-    std::tuple<std::string, std::string, std::string> hero = std::make_tuple("Stan", "Carry", "500.99");
-    std::cout << "The Hero is " << std::get<0>(hero) << std::endl; // access the tuple std::get<index>(variable)
+    std::tuple<std::string, std::string, std::string> hero =
+        std::make_tuple("Stan", "Carry", "500.99");
+    std::cout << "The Hero is " << std::get<0>(hero)
+              << std::endl; // access the tuple std::get<index>(variable)
     std::cout << "Hero said " << std::get<1>(hero) << std::endl;
     std::cout << "Hero said " << std::get<2>(hero) << std::endl;
 

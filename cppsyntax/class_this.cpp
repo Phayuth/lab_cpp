@@ -16,14 +16,16 @@ class Cylinder {
 
         void show_info() {
             printf("Radius : %f\n", radius);
-            printf("Large data is integer : %i\n", *large_data_i_dont_want_to_copy);
+            printf("Large data is integer : %i\n",
+                   *large_data_i_dont_want_to_copy);
         }
 
         // default contructor empty parameter
         Cylinder() = default;
 
         // constructor with pointer
-        Cylinder(double radius_param, double height_param, int large_data_i_dont_want_to_copy_param) {
+        Cylinder(double radius_param, double height_param,
+                 int large_data_i_dont_want_to_copy_param) {
             this->radius = radius;
             this->height = height;
 
@@ -90,9 +92,11 @@ class T {
         }
 
         int y;
-        T(int x) : x(x),      // uses parameter x to initialize member x
-                   y(this->x) // uses member x to initialize member y
-        {}
+        T(int x)
+            : x(x),      // uses parameter x to initialize member x
+              y(this->x) // uses member x to initialize member y
+        {
+        }
 
         T &operator=(const T &b) {
             x = b.x;
