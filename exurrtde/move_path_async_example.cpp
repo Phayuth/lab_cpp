@@ -14,28 +14,39 @@ int main(int argc, char *argv[]) {
     ur_rtde::Path path;
     double velocity = 0.5;
     double acceleration = 4;
-    path.addEntry({PathEntry::MoveJ,
-                   PathEntry::PositionTcpPose,
-                   {-0.140, -0.400, 0.100, 0, 3.14, 0, velocity, acceleration,
-                    0}}); // move to initial position using movej with inverse kinematics
-    path.addEntry({PathEntry::MoveL,
-                   PathEntry::PositionTcpPose,
-                   {-0.140, -0.400, 0.300, 0, 3.14, 0, velocity, acceleration, 0.099}});
-    path.addEntry({PathEntry::MoveL,
-                   PathEntry::PositionTcpPose,
-                   {-0.140, -0.600, 0.300, 0, 3.14, 0, velocity, acceleration, 0.099}});
-    path.addEntry({PathEntry::MoveL,
-                   PathEntry::PositionTcpPose,
-                   {-0.140, -0.600, 0.100, 0, 3.14, 0, velocity, acceleration, 0.099}});
-    path.addEntry({PathEntry::MoveL,
-                   PathEntry::PositionTcpPose,
-                   {-0.140, -0.400, 0.100, 0, 3.14, 0, velocity, acceleration, 0}});
+    path.addEntry(
+        {PathEntry::MoveJ,
+         PathEntry::PositionTcpPose,
+         {-0.140,
+          -0.400,
+          0.100,
+          0,
+          3.14,
+          0,
+          velocity,
+          acceleration,
+          0}}); // move to initial position using movej with inverse kinematics
+    path.addEntry(
+        {PathEntry::MoveL,
+         PathEntry::PositionTcpPose,
+         {-0.140, -0.400, 0.300, 0, 3.14, 0, velocity, acceleration, 0.099}});
+    path.addEntry(
+        {PathEntry::MoveL,
+         PathEntry::PositionTcpPose,
+         {-0.140, -0.600, 0.300, 0, 3.14, 0, velocity, acceleration, 0.099}});
+    path.addEntry(
+        {PathEntry::MoveL,
+         PathEntry::PositionTcpPose,
+         {-0.140, -0.600, 0.100, 0, 3.14, 0, velocity, acceleration, 0.099}});
+    path.addEntry(
+        {PathEntry::MoveL,
+         PathEntry::PositionTcpPose,
+         {-0.140, -0.400, 0.100, 0, 3.14, 0, velocity, acceleration, 0}});
 
     // First move given path synchronously
     std::cout << "Move path synchronously..." << std::endl;
     rtde_control.movePath(path, false);
-    std::cout << "Path finished...\n\n"
-              << std::endl;
+    std::cout << "Path finished...\n\n" << std::endl;
 
     // Now move given path asynchronously
     std::cout << "Move path asynchronously with progress feedback..." << std::endl;
@@ -55,8 +66,7 @@ int main(int argc, char *argv[]) {
             std::cout << "Moving to path waypoint " << waypoint << std::endl;
         }
     }
-    std::cout << "Async path finished...\n\n"
-              << std::endl;
+    std::cout << "Async path finished...\n\n" << std::endl;
 
     rtde_control.stopScript();
     return 0;

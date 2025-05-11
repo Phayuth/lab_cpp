@@ -31,9 +31,15 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml("./_projects/_paper_torus/build/paper_r2s_planner_data.graphml")
-path = np.loadtxt("./_projects/_paper_torus/build/paper_r2s_path.csv", delimiter=",")
-state = np.loadtxt("./_projects/_paper_torus/build/paper_r2s_start_goal.csv", delimiter=",")
+graph = nx.read_graphml(
+    "./_projects/_paper_torus/build/paper_r2s_planner_data.graphml"
+)
+path = np.loadtxt(
+    "./_projects/_paper_torus/build/paper_r2s_path.csv", delimiter=","
+)
+state = np.loadtxt(
+    "./_projects/_paper_torus/build/paper_r2s_start_goal.csv", delimiter=","
+)
 
 
 # tree

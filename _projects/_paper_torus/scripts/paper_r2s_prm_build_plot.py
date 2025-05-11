@@ -31,7 +31,8 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml("./exompl/build/saved_planner.graphml")
+graph = nx.read_graphml("./_projects/_paper_torus/build/saved_planner.graphml")
+colp = np.load("./_projects/_paper_torus/config/collisionpoint_exts.npy")
 
 fig, ax = plt.subplots()
 ax.set_aspect("equal")
@@ -51,5 +52,14 @@ for u, v in graph.edges:
         markersize=PlotterConfig.treeMarkersize,
     )
 
+plt.plot(
+    colp[:, 0],
+    colp[:, 1],
+    color="darkcyan",
+    linewidth=0,
+    marker="o",
+    markerfacecolor="darkcyan",
+    markersize=1.5,
+)
 
 plt.show()

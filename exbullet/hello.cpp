@@ -7,19 +7,27 @@ int main(int argc, char **argv) {
     int i;
     ///-----initialization_start-----
 
-    /// collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
-    btDefaultCollisionConfiguration *collisionConfiguration = new btDefaultCollisionConfiguration();
+    /// collision configuration contains default setup for memory, collision setup.
+    /// Advanced users can create their own configuration.
+    btDefaultCollisionConfiguration *collisionConfiguration =
+        new btDefaultCollisionConfiguration();
 
-    /// use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
-    btCollisionDispatcher *dispatcher = new btCollisionDispatcher(collisionConfiguration);
+    /// use the default collision dispatcher. For parallel processing you can use a
+    /// diffent dispatcher (see Extras/BulletMultiThreaded)
+    btCollisionDispatcher *dispatcher =
+        new btCollisionDispatcher(collisionConfiguration);
 
-    /// btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
+    /// btDbvtBroadphase is a good general purpose broadphase. You can also try out
+    /// btAxis3Sweep.
     btBroadphaseInterface *overlappingPairCache = new btDbvtBroadphase();
 
-    /// the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
-    btSequentialImpulseConstraintSolver *solver = new btSequentialImpulseConstraintSolver;
+    /// the default constraint solver. For parallel processing you can use a
+    /// different solver (see Extras/BulletMultiThreaded)
+    btSequentialImpulseConstraintSolver *solver =
+        new btSequentialImpulseConstraintSolver;
 
-    btDiscreteDynamicsWorld *dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+    btDiscreteDynamicsWorld *dynamicsWorld = new btDiscreteDynamicsWorld(
+        dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
     dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
@@ -34,7 +42,8 @@ int main(int argc, char **argv) {
     // the ground is a cube of side 100 at position y = -56.
     // the sphere will hit it at y = -6, with center at -5
     {
-        btCollisionShape *groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
+        btCollisionShape *groundShape =
+            new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
 
         collisionShapes.push_back(groundShape);
 
@@ -51,9 +60,12 @@ int main(int argc, char **argv) {
         if (isDynamic)
             groundShape->calculateLocalInertia(mass, localInertia);
 
-        // using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-        btDefaultMotionState *myMotionState = new btDefaultMotionState(groundTransform);
-        btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
+        // using motionstate is optional, it provides interpolation capabilities,
+        // and only synchronizes 'active' objects
+        btDefaultMotionState *myMotionState =
+            new btDefaultMotionState(groundTransform);
+        btRigidBody::btRigidBodyConstructionInfo rbInfo(
+            mass, myMotionState, groundShape, localInertia);
         btRigidBody *body = new btRigidBody(rbInfo);
 
         // add the body to the dynamics world
@@ -82,9 +94,12 @@ int main(int argc, char **argv) {
 
         startTransform.setOrigin(btVector3(2, 10, 0));
 
-        // using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-        btDefaultMotionState *myMotionState = new btDefaultMotionState(startTransform);
-        btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+        // using motionstate is recommended, it provides interpolation
+        // capabilities, and only synchronizes 'active' objects
+        btDefaultMotionState *myMotionState =
+            new btDefaultMotionState(startTransform);
+        btRigidBody::btRigidBodyConstructionInfo rbInfo(
+            mass, myMotionState, colShape, localInertia);
         btRigidBody *body = new btRigidBody(rbInfo);
 
         dynamicsWorld->addRigidBody(body);
@@ -106,7 +121,11 @@ int main(int argc, char **argv) {
             } else {
                 trans = obj->getWorldTransform();
             }
-            printf("world pos object %d = %f,%f,%f\n", j, float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
+            printf("world pos object %d = %f,%f,%f\n",
+                   j,
+                   float(trans.getOrigin().getX()),
+                   float(trans.getOrigin().getY()),
+                   float(trans.getOrigin().getZ()));
         }
     }
 
@@ -148,6 +167,7 @@ int main(int argc, char **argv) {
 
     delete collisionConfiguration;
 
-    // next line is optional: it will be cleared by the destructor when the array goes out of scope
+    // next line is optional: it will be cleared by the destructor when the array
+    // goes out of scope
     collisionShapes.clear();
 }

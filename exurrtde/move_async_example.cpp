@@ -17,9 +17,10 @@ int main(int argc, char *argv[]) {
     new_q[0] += 0.2;
 
     /**
-     * Move asynchronously in joint space to new_q, we specify asynchronous behavior by setting the async parameter to
-     * 'true'. Try to set the async parameter to 'false' to observe a default synchronous movement, which cannot be
-     * stopped by the stopJ function due to the blocking behaviour.
+     * Move asynchronously in joint space to new_q, we specify asynchronous
+     * behavior by setting the async parameter to 'true'. Try to set the async
+     * parameter to 'false' to observe a default synchronous movement, which cannot
+     * be stopped by the stopJ function due to the blocking behaviour.
      */
     rtde_control.moveJ(new_q, 1.05, 1.4, true);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
@@ -31,9 +32,10 @@ int main(int argc, char *argv[]) {
     target[2] += 0.10;
 
     /**
-     * Move asynchronously in cartesian space to target, we specify asynchronous behavior by setting the async parameter
-     * to 'true'. Try to set the async parameter to 'false' to observe a default synchronous movement, which cannot be
-     * stopped by the stopL function due to the blocking behaviour.
+     * Move asynchronously in cartesian space to target, we specify asynchronous
+     * behavior by setting the async parameter to 'true'. Try to set the async
+     * parameter to 'false' to observe a default synchronous movement, which cannot
+     * be stopped by the stopL function due to the blocking behaviour.
      */
     rtde_control.moveL(target, 0.25, 0.5, true);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));

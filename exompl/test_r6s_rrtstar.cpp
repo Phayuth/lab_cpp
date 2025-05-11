@@ -8,7 +8,8 @@ namespace ob = ompl::base;
 namespace og = ompl::geometric;
 
 bool isStateValid(const ob::State *state) {
-    // This is where you'd add your custom validity checks, like collisions or joint limits.
+    // This is where you'd add your custom validity checks, like collisions or
+    // joint limits.
     return true;
 }
 

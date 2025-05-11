@@ -2,7 +2,8 @@
 #include <cmath>
 #include <iostream>
 
-DifferentialDriveRobot::DifferentialDriveRobot(double blength, double wradius, double x, double y, double yaw) {
+DifferentialDriveRobot::DifferentialDriveRobot(double blength, double wradius,
+                                               double x, double y, double yaw) {
     this->blength = blength;
     this->wradius = wradius;
 

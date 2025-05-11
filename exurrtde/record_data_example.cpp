@@ -19,10 +19,16 @@ void raiseFlag(int param) {
 int main(int argc, char *argv[]) {
     try {
         po::options_description desc("Allowed options");
-        desc.add_options()("help", "Record robot data to a (.csv) file")("robot_ip", po::value<std::string>()->default_value("localhost"),
-                                                                         "the IP address of the robot")("frequency", po::value<double>()->default_value(500.0),
-                                                                                                        "the frequency at which the data is recorded (default is 500Hz)")("output", po::value<std::string>()->default_value("robot_data.csv"),
-                                                                                                                                                                          "data output (.csv) file to write to (default is \"robot_data.csv\"");
+        desc.add_options()("help", "Record robot data to a (.csv) file")(
+            "robot_ip",
+            po::value<std::string>()->default_value("localhost"),
+            "the IP address of the robot")(
+            "frequency",
+            po::value<double>()->default_value(500.0),
+            "the frequency at which the data is recorded (default is 500Hz)")(
+            "output",
+            po::value<std::string>()->default_value("robot_data.csv"),
+            "data output (.csv) file to write to (default is \"robot_data.csv\"");
 
         po::variables_map vm;
         po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -35,10 +41,12 @@ int main(int argc, char *argv[]) {
 
         signal(SIGINT, raiseFlag);
         double frequency = vm["frequency"].as<double>();
-        RTDEReceiveInterface rtde_receive(vm["robot_ip"].as<std::string>(), frequency, {}, true, false);
+        RTDEReceiveInterface rtde_receive(
+            vm["robot_ip"].as<std::string>(), frequency, {}, true, false);
 
         rtde_receive.startFileRecording(vm["output"].as<std::string>());
-        std::cout << "Data recording started. press [Ctrl-C] to end recording." << std::endl;
+        std::cout << "Data recording started. press [Ctrl-C] to end recording."
+                  << std::endl;
         int i = 0;
         while (running) {
             steady_clock::time_point t_start = rtde_receive.initPeriod();

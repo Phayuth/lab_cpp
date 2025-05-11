@@ -22,7 +22,8 @@ Rectangle::~Rectangle() {
 checkking rectangle collsion with pass by value
 */
 bool check_rectangle(Rectangle rec1, Rectangle rec2) {
-    if ((rec1.x + rec1.w >= rec2.x) && (rec1.x <= rec2.x + rec2.w) && (rec1.y + rec1.h >= rec2.y) && (rec1.y <= rec2.y + rec2.h)) {
+    if ((rec1.x + rec1.w >= rec2.x) && (rec1.x <= rec2.x + rec2.w) &&
+        (rec1.y + rec1.h >= rec2.y) && (rec1.y <= rec2.y + rec2.h)) {
         return true;
     }
     return false;
@@ -31,7 +32,8 @@ bool check_rectangle(Rectangle rec1, Rectangle rec2) {
 checking rectangle collision with pass by reference
 */
 bool check_rectangle_r(Rectangle &rec1, Rectangle &rec2) {
-    if ((rec1.x + rec1.w >= rec2.x) && (rec1.x <= rec2.x + rec2.w) && (rec1.y + rec1.h >= rec2.y) && (rec1.y <= rec2.y + rec2.h)) {
+    if ((rec1.x + rec1.w >= rec2.x) && (rec1.x <= rec2.x + rec2.w) &&
+        (rec1.y + rec1.h >= rec2.y) && (rec1.y <= rec2.y + rec2.h)) {
         return true;
     }
     return false;

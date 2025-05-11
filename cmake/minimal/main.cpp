@@ -4,7 +4,8 @@
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) // When I delete this section, and call the exe by not passing in more input it give Segmentation fault (core dumped)
+    if (argc < 2) // When I delete this section, and call the exe by not passing in
+                  // more input it give Segmentation fault (core dumped)
     {
         std::cout << "Usage: " << argv[0] << " number" << std::endl;
         return 1;
@@ -16,6 +17,7 @@ int main(int argc, char *argv[]) {
     }
 
     double inputValue = atof(argv[1]);
-    std::cout << "The square root of " << inputValue << " is " << mysqrt(inputValue) << std::endl;
+    std::cout << "The square root of " << inputValue << " is "
+              << mysqrt(inputValue) << std::endl;
     return 0;
 }

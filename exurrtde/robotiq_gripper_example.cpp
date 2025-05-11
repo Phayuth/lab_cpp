@@ -37,17 +37,18 @@ int main(int argc, char *argv[]) {
     if (!gripper.isActive()) {
         gripper.emergencyRelease(RobotiqGripper::OPEN);
     }
-    std::cout << "Fault status: 0x" << std::hex << gripper.faultStatus() << std::dec << std::endl;
+    std::cout << "Fault status: 0x" << std::hex << gripper.faultStatus()
+              << std::dec << std::endl;
     std::cout << "activating gripper" << std::endl;
     gripper.activate();
 
     // Test setting of position units and conversion of position values
     gripper.setUnit(RobotiqGripper::POSITION, RobotiqGripper::UNIT_DEVICE);
-    std::cout << "OpenPosition: " << gripper.getOpenPosition() << "  ClosedPosition: " << gripper.getClosedPosition()
-              << std::endl;
+    std::cout << "OpenPosition: " << gripper.getOpenPosition()
+              << "  ClosedPosition: " << gripper.getClosedPosition() << std::endl;
     gripper.setUnit(RobotiqGripper::POSITION, RobotiqGripper::UNIT_NORMALIZED);
-    std::cout << "OpenPosition: " << gripper.getOpenPosition() << "  ClosedPosition: " << gripper.getClosedPosition()
-              << std::endl;
+    std::cout << "OpenPosition: " << gripper.getOpenPosition()
+              << "  ClosedPosition: " << gripper.getClosedPosition() << std::endl;
 
     // Test of move functionality with normalized values (0.0 - 1.0)
     int status = gripper.move(1, 1, 0, RobotiqGripper::WAIT_FINISHED);
@@ -55,15 +56,17 @@ int main(int argc, char *argv[]) {
     status = gripper.move(0, 1, 0, RobotiqGripper::WAIT_FINISHED);
     printStatus(status);
 
-    // We preset force and and speed so we don't need to pass it to the following move functions
+    // We preset force and and speed so we don't need to pass it to the following
+    // move functions
     gripper.setForce(0.0);
     gripper.setSpeed(0.5);
 
-    // We switch the position unit the mm and define the position range of our gripper
+    // We switch the position unit the mm and define the position range of our
+    // gripper
     gripper.setUnit(RobotiqGripper::POSITION, RobotiqGripper::UNIT_MM);
     gripper.setPositionRange_mm(50);
-    std::cout << "OpenPosition: " << gripper.getOpenPosition() << "  ClosedPosition: " << gripper.getClosedPosition()
-              << std::endl;
+    std::cout << "OpenPosition: " << gripper.getOpenPosition()
+              << "  ClosedPosition: " << gripper.getClosedPosition() << std::endl;
     gripper.move(50);
     status = gripper.waitForMotionComplete();
     printStatus(status);
@@ -89,8 +92,8 @@ int main(int argc, char *argv[]) {
     gripper.setUnit(RobotiqGripper::SPEED, RobotiqGripper::UNIT_DEVICE);
     gripper.setUnit(RobotiqGripper::FORCE, RobotiqGripper::UNIT_DEVICE);
 
-    std::cout << "OpenPosition: " << gripper.getOpenPosition() << "  ClosedPosition: " << gripper.getClosedPosition()
-              << std::endl;
+    std::cout << "OpenPosition: " << gripper.getOpenPosition()
+              << "  ClosedPosition: " << gripper.getClosedPosition() << std::endl;
 
     gripper.move(255, 5, 0);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

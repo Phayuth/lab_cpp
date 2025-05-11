@@ -13,7 +13,6 @@ int main(int argc, char const *argv[]) {
     std::cout << "Output is :" << std::endl;
     std::cout << output << std::endl;
 
-
     torch::jit::script::Module net = torch::jit::load("../models/net.pt");
     torch::Tensor x = torch::randn({1, 100});
     torch::Tensor x = torch::randn({3, 3}, torch::kCUDA);

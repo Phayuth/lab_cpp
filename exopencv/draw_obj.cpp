@@ -21,7 +21,6 @@ int main(int argc, char **argv) {
     pc.y = 100;
     cv::circle(image, pc, 63, cv::Scalar(0, 255, 0), 3, cv::LineTypes::LINE_AA);
 
-
     if (!image.data) {
         printf("No image data \n");
         return -1;

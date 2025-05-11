@@ -43,13 +43,16 @@ Eigen::MatrixXd find_alt_config(Eigen::RowVectorXd q, Eigen::RowVectorXd qbound)
     Eigen::MatrixXd qShifted = cart.rowwise() + q;
 
     // eliminate with joint limit. check joint limit independently
-    // Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> inup = (qShifted.array() < 2 * M_PI);
-    // Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> inlw = (qShifted.array() > -2 * M_PI);
-    // Perform row-wise comparison using broadcasting with array conversion
+    // Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> inup = (qShifted.array()
+    // < 2 * M_PI); Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> inlw =
+    // (qShifted.array() > -2 * M_PI); Perform row-wise comparison using
+    // broadcasting with array conversion
     Eigen::ArrayXXd qShiftedarray = qShifted.array();
     Eigen::ArrayXXd qboundarray = qbound.replicate(qShifted.rows(), 1);
-    Eigen::Array<bool, Eigen::Dynamic, Eigen::Dynamic> inup = (qShiftedarray < qboundarray);
-    Eigen::Array<bool, Eigen::Dynamic, Eigen::Dynamic> inlw = (qShiftedarray > -qboundarray);
+    Eigen::Array<bool, Eigen::Dynamic, Eigen::Dynamic> inup =
+        (qShiftedarray < qboundarray);
+    Eigen::Array<bool, Eigen::Dynamic, Eigen::Dynamic> inlw =
+        (qShiftedarray > -qboundarray);
     auto inlimit = (inup && inlw).rowwise().all();
 
     Eigen::MatrixXd qShiftedInLimit(inlimit.count(), qShifted.cols());
@@ -60,7 +63,9 @@ Eigen::MatrixXd find_alt_config(Eigen::RowVectorXd q, Eigen::RowVectorXd qbound)
         }
     }
 
-    printf("\nThe alternative configuration shape is %ld, %ld", qShiftedInLimit.rows(), qShiftedInLimit.cols());
+    printf("\nThe alternative configuration shape is %ld, %ld",
+           qShiftedInLimit.rows(),
+           qShiftedInLimit.cols());
 
     // TODO filter out the original q
     return qShiftedInLimit;

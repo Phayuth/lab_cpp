@@ -1,3 +1,6 @@
+/*
+RRTStar Planning with R2 state space strictly over -2pi/2pi.
+*/
 #include "findaltconfig.h"
 #include "sim_planar_rr.h"
 #include <fstream>
@@ -22,7 +25,7 @@ void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
 
 int main() {
     // Load YAML configuration
-    YAML::Node config = YAML::LoadFile("../config/paper_exts_goalset.yaml");
+    YAML::Node config = YAML::LoadFile("../config/paper_r2s_extsgoalset.yaml");
 
     // Robot setup
     double l1 = config["robot"]["l1"].as<double>();

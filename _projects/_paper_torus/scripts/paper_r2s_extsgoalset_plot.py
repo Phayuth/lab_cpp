@@ -31,10 +31,17 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml("./_projects/_paper_torus/build/paper_exts_goalset_planner_data.graphml")
-path = np.loadtxt("./_projects/_paper_torus/build/paper_exts_goalset_path.csv", delimiter=",")
-state = np.loadtxt("./_projects/_paper_torus/build/paper_exts_goalset_start_goal.csv", delimiter=",")
-colp = np.load("./_projects/_paper_torus/build/collisionpoint_exts.npy")
+graph = nx.read_graphml(
+    "./_projects/_paper_torus/build/paper_r2s_extsgoalset_planner_data.graphml"
+)
+path = np.loadtxt(
+    "./_projects/_paper_torus/build/paper_r2s_extsgoalset_path.csv", delimiter=","
+)
+state = np.loadtxt(
+    "./_projects/_paper_torus/build/paper_r2s_extsgoalset_start_goal.csv",
+    delimiter=",",
+)
+colp = np.load("./_projects/_paper_torus/config/collisionpoint_exts.npy")
 
 # plotting
 plt.figure(figsize=(8, 8))

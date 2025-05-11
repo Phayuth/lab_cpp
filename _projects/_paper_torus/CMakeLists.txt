@@ -12,8 +12,8 @@ add_subdirectory("../../spatial_geometry" "${CMAKE_BINARY_DIR}/spatial_geometry"
 add_subdirectory("../../robot" "${CMAKE_BINARY_DIR}/robot")
 
 # ext goal case
-add_executable(paper_exts_goalset paper_exts_goalset.cpp)
-target_link_libraries(paper_exts_goalset PUBLIC ompl robot spatial_geometry yaml-cpp)
+add_executable(paper_r2s_extsgoalset paper_r2s_extsgoalset.cpp)
+target_link_libraries(paper_r2s_extsgoalset PUBLIC ompl robot spatial_geometry yaml-cpp)
 
 # r2 space
 add_executable(paper_r2s paper_r2s.cpp)
@@ -22,3 +22,9 @@ target_link_libraries(paper_r2s PUBLIC ompl robot spatial_geometry yaml-cpp)
 # so2 space
 add_executable(paper_so2s paper_so2s.cpp)
 target_link_libraries(paper_so2s PUBLIC ompl robot spatial_geometry yaml-cpp)
+
+
+# PRM build
+find_package(Boost REQUIRED COMPONENTS serialization)
+add_executable(paper_prm_build paper_r2s_prm_build.cpp)
+target_link_libraries(paper_prm_build PUBLIC ompl robot spatial_geometry yaml-cpp Boost::serialization)

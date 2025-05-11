@@ -9,9 +9,9 @@ int main(int argc, char *argv[]) {
     RTDEIOInterface rtde_io("192.168.0.3");
     RTDEReceiveInterface rtde_receive("192.168.0.3");
 
-    /** How-to set and get standard and tool digital outputs. Notice that we need the
-     * RTDEIOInterface for setting an output and RTDEReceiveInterface for getting the state
-     * of an output.
+    /** How-to set and get standard and tool digital outputs. Notice that we need
+     * the RTDEIOInterface for setting an output and RTDEReceiveInterface for
+     * getting the state of an output.
      */
 
     if (rtde_receive.getDigitalOutState(7))

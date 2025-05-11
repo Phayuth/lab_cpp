@@ -9,7 +9,9 @@ class Utils:
     def wrap_to_pi(q):
         return (q + np.pi) % (2 * np.pi) - np.pi
 
-    def find_alt_config(q, configLimit, configConstrict=None, filterOriginalq=False):  # a better function than find_shifted_value
+    def find_alt_config(
+        q, configLimit, configConstrict=None, filterOriginalq=False
+    ):  # a better function than find_shifted_value
         """
         Find the alternative value of configuration in different quadrand.
         configConstrict : Constrict specific joint from finding alternative. Ex: the last joint of robot doesn't make any different when moving so we ignore them.
@@ -17,16 +19,29 @@ class Utils:
         """
         # possible config value
         qw = Utils.wrap_to_pi(q)  # transform to base quadrand first
-        qShifted = qw + np.array(list(product([-2.0 * np.pi, 0.0, 2.0 * np.pi], repeat=qw.shape[0]))).T
+        qShifted = (
+            qw
+            + np.array(
+                list(product([-2.0 * np.pi, 0.0, 2.0 * np.pi], repeat=qw.shape[0]))
+            ).T
+        )
 
         # eliminate with joint limit
-        isInLimitMask = np.all((qShifted >= configLimit[:, 0, np.newaxis]) & (qShifted <= configLimit[:, 1, np.newaxis]), axis=0)
+        isInLimitMask = np.all(
+            (qShifted >= configLimit[:, 0, np.newaxis])
+            & (qShifted <= configLimit[:, 1, np.newaxis]),
+            axis=0,
+        )
         qInLimit = qShifted[:, isInLimitMask]
 
         # joint constrict
         if configConstrict is not None:
-            assert isinstance(configConstrict, list), "configConstrict must be in list format"
-            assert len(configConstrict) == qw.shape[0], "configConstrict length must be equal to state number"
+            assert isinstance(
+                configConstrict, list
+            ), "configConstrict must be in list format"
+            assert (
+                len(configConstrict) == qw.shape[0]
+            ), "configConstrict length must be equal to state number"
             for i in range(len(configConstrict)):
                 if configConstrict[i] is True:
                     qInLimit[i] = qw[i]
@@ -78,9 +93,15 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml("./_projects/_paper_torus/build/paper_so2s_planner_data.graphml")
-path = np.loadtxt("./_projects/_paper_torus/build/paper_so2s_path.csv", delimiter=",")
-state = np.loadtxt("./_projects/_paper_torus/build/paper_so2s_start_goal.csv", delimiter=",")
+graph = nx.read_graphml(
+    "./_projects/_paper_torus/build/paper_so2s_planner_data.graphml"
+)
+path = np.loadtxt(
+    "./_projects/_paper_torus/build/paper_so2s_path.csv", delimiter=","
+)
+state = np.loadtxt(
+    "./_projects/_paper_torus/build/paper_so2s_start_goal.csv", delimiter=","
+)
 colp = np.load("./_projects/_paper_torus/build/collisionpoint_so2s.npy")
 
 # plotting

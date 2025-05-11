@@ -26,7 +26,8 @@ Line::~Line() {
 }
 
 bool check_rectangle(Rectangle rec1, Rectangle rec2) {
-    if ((rec1.x + rec1.w >= rec2.x) && (rec1.x <= rec2.x + rec2.w) && (rec1.y + rec1.h >= rec2.y) && (rec1.y <= rec2.y + rec2.h)) {
+    if ((rec1.x + rec1.w >= rec2.x) && (rec1.x <= rec2.x + rec2.w) &&
+        (rec1.y + rec1.h >= rec2.y) && (rec1.y <= rec2.y + rec2.h)) {
         return true;
     }
     return false;
@@ -43,8 +44,10 @@ bool check_line_v_line(Line line1, Line line2) {
     auto x4 = line2.xe;
     auto y4 = line2.ye;
 
-    double uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-    double uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+    double uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) /
+                ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+    double uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) /
+                ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
 
     if ((uA >= 0.0) && (uA <= 1.0) && (uB >= 0.0) && (uB <= 1.0)) {
         return true;
@@ -59,7 +62,8 @@ bool check_link_v_rectangle(Line line, Rectangle rec) {
     auto l3 = Line(rec.x + rec.w, rec.y + rec.h, rec.x, rec.y + rec.h);
     auto l4 = Line(rec.x, rec.y + rec.h, rec.x, rec.y);
 
-    if (check_line_v_line(line, l1) || check_line_v_line(line, l2) || check_line_v_line(line, l3) || check_line_v_line(line, l4)) {
+    if (check_line_v_line(line, l1) || check_line_v_line(line, l2) ||
+        check_line_v_line(line, l3) || check_line_v_line(line, l4)) {
         return true;
     }
     return false;

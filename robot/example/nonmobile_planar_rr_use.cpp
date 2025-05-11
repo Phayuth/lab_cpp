@@ -1,6 +1,6 @@
 #include "nonmobile_planar_rr.h"
-#include <iostream>
 #include <array>
+#include <iostream>
 
 int main(int argc, char const *argv[]) {
     double l1 = 2.0;

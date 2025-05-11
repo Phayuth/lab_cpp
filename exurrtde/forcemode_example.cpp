@@ -25,9 +25,11 @@ int main(int argc, char *argv[]) {
         steady_clock::time_point t_start = rtde_control.initPeriod();
         // First we move the robot down for 2 seconds, then up for 2 seconds
         if (i > 1000)
-            rtde_control.forceMode(task_frame, selection_vector, wrench_up, force_type, limits);
+            rtde_control.forceMode(
+                task_frame, selection_vector, wrench_up, force_type, limits);
         else
-            rtde_control.forceMode(task_frame, selection_vector, wrench_down, force_type, limits);
+            rtde_control.forceMode(
+                task_frame, selection_vector, wrench_down, force_type, limits);
         rtde_control.waitPeriod(t_start);
     }
 

@@ -6,8 +6,8 @@ find_package(OpenCV REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(display_image display_image.cpp )
-target_link_libraries( display_image ${OpenCV_LIBS})
+add_executable(display_image display_image.cpp)
+target_link_libraries(display_image ${OpenCV_LIBS})
 
 add_executable(draw_obj draw_obj.cpp)
 target_link_libraries(draw_obj ${OpenCV_LIBS})

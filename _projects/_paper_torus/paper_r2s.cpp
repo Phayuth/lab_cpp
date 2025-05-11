@@ -1,3 +1,6 @@
+/*
+RRTStar Planning with R2 state space can be on -pi/pi and -2pi/2pi.
+*/
 #include "sim_planar_rr.h"
 #include <fstream>
 #include <iostream>
@@ -41,8 +44,8 @@ int main() {
     // Planning space setup
     auto space = std::make_shared<ob::RealVectorStateSpace>(2);
     ob::RealVectorBounds bounds(2);
-    bounds.setLow(-M_PI);
-    bounds.setHigh(M_PI);
+    bounds.setLow(-config["qlimit"][0].as<double>());
+    bounds.setHigh(config["qlimit"][1].as<double>());
     space->setBounds(bounds);
     og::SimpleSetup ss(space);
 
@@ -81,8 +84,7 @@ int main() {
         const og::PathGeometric &path = ss.getSolutionPath();
         auto space_information(
             std::make_shared<ompl::base::SpaceInformation>(space));
-        savePathToFile(path,
-                       config["path_save_path"].as<std::string>() + ".csv");
+        savePathToFile(path, config["path_save_path"].as<std::string>() + ".csv");
         savePlannerData(planner,
                         space_information,
                         config["path_save_planner_data"].as<std::string>() +
@@ -108,8 +110,7 @@ bool isStateValid(const ob::State *state, PlanarRRSIM &sim) {
     return !c;
 }
 
-void savePathToFile(const og::PathGeometric &path,
-                    const std::string &filename) {
+void savePathToFile(const og::PathGeometric &path, const std::string &filename) {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Unable to open file: " << filename << std::endl;
@@ -118,8 +119,7 @@ void savePathToFile(const og::PathGeometric &path,
 
     for (std::size_t i = 0; i < path.getStateCount(); ++i) {
         const ob::State *state = path.getState(i);
-        const auto *realState =
-            state->as<ob::RealVectorStateSpace::StateType>();
+        const auto *realState = state->as<ob::RealVectorStateSpace::StateType>();
         double theta1 = realState->values[0];
         double theta2 = realState->values[1];
         file << theta1 << "," << theta2 << std::endl;
@@ -154,9 +154,8 @@ void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
         startState->as<ob::RealVectorStateSpace::StateType>()->values;
     file << start_coords[0] << "," << start_coords[1] << std::endl;
 
-    const double *goal_coords = goalState->getState()
-                                    ->as<ob::RealVectorStateSpace::StateType>()
-                                    ->values;
+    const double *goal_coords =
+        goalState->getState()->as<ob::RealVectorStateSpace::StateType>()->values;
     file << goal_coords[0] << "," << goal_coords[1] << std::endl;
 
     file.close();

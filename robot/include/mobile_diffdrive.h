@@ -11,7 +11,8 @@ class DifferentialDriveRobot {
         double y;
         double yaw;
 
-        DifferentialDriveRobot(double blength, double wradius, double x, double y, double yaw);
+        DifferentialDriveRobot(double blength, double wradius, double x, double y,
+                               double yaw);
         ~DifferentialDriveRobot();
 
         void set_pose(double x, double y, double yaw);

@@ -1,7 +1,5 @@
-#include "mysqrt.h"
+#include "my_math/math_lib.h"
 
-double mysqrt(double value)
-{
+double mysqrt(double value) {
     return sqrt(value);
 }
-

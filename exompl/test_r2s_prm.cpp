@@ -18,8 +18,8 @@ void save_to_storage(ob::PlannerDataStorage &datastorage, ob::PlannerData &data,
     datastorage.store(data, "stored_with_storage");
 }
 
-void load_from_storage(ob::PlannerDataStorage &datastorage,
-                       ob::PlannerData &data, std::string &filename) {
+void load_from_storage(ob::PlannerDataStorage &datastorage, ob::PlannerData &data,
+                       std::string &filename) {
     datastorage.load("stored_with_sorage", data);
 }
 

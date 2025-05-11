@@ -1,14 +1,25 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-joint12 = np.loadtxt("./_projects/_paper_torus/build/paper_so2s_path.csv", delimiter=",")
+joint12 = np.loadtxt(
+    "./_projects/_paper_torus/build/paper_so2s_path.csv", delimiter=","
+)
 
 
 numseg, numjoints = joint12.shape
 time = np.linspace(0, 1, num=numseg)
 fig, axs = plt.subplots(numjoints, 1, figsize=(10, 15), sharex=True)
 for i in range(numjoints):
-    axs[i].plot(time, joint12[:, i], color="blue", marker="o", linestyle="dashed", linewidth=2, markersize=12, label=f"Joint Pos {i+1}")
+    axs[i].plot(
+        time,
+        joint12[:, i],
+        color="blue",
+        marker="o",
+        linestyle="dashed",
+        linewidth=2,
+        markersize=12,
+        label=f"Joint Pos {i+1}",
+    )
     axs[i].set_ylabel(f"JPos {i+1}")
     axs[i].set_xlim(time[0], time[-1])
     axs[i].set_ylim(-np.pi, np.pi)

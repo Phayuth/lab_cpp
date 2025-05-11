@@ -1,3 +1,6 @@
+/*
+A simple OMPL path planning for mobile manipulator with 9DOFs using RRT*.
+*/
 #include <fstream>
 #include <iostream>
 #include <ompl-1.5/ompl/base/goals/GoalState.h>
@@ -22,7 +25,9 @@ int main() {
     auto s1 = std::make_shared<ob::RealVectorStateSpace>(2);
     ob::RealVectorBounds sb1(2);
     for (size_t i = 0; i < 2; i++) {
-        printf("low : %f and high : %f \n", -config["qlimit"][i].as<double>(), config["qlimit"][i].as<double>());
+        printf("low : %f and high : %f \n",
+               -config["qlimit"][i].as<double>(),
+               config["qlimit"][i].as<double>());
         sb1.setLow(i, -config["qlimit"][i].as<double>());
         sb1.setHigh(i, config["qlimit"][i].as<double>());
     }
@@ -36,7 +41,9 @@ int main() {
     auto s3 = std::make_shared<ob::RealVectorStateSpace>(6);
     ob::RealVectorBounds sb3(6);
     for (size_t i = 0; i < 6; i++) {
-        printf("low : %f and high : %f \n", -config["qlimit"][i + 3].as<double>(), config["qlimit"][i + 3].as<double>());
+        printf("low : %f and high : %f \n",
+               -config["qlimit"][i + 3].as<double>(),
+               config["qlimit"][i + 3].as<double>());
         sb3.setLow(i, -config["qlimit"][i + 3].as<double>());
         sb3.setHigh(i, config["qlimit"][i + 3].as<double>());
     }
@@ -102,7 +109,8 @@ void savePathToFile(const og::PathGeometric &path, const std::string &filename) 
         double q6 = cpstate->as<ob::RealVectorStateSpace::StateType>(2)->values[3];
         double q7 = cpstate->as<ob::RealVectorStateSpace::StateType>(2)->values[4];
         double q8 = cpstate->as<ob::RealVectorStateSpace::StateType>(2)->values[5];
-        file << q0 << "," << q1 << "," << q2 << "," << q3 << "," << q4 << "," << q5 << "," << q6 << "," << q7 << "," << q8 << std::endl;
+        file << q0 << "," << q1 << "," << q2 << "," << q3 << "," << q4 << "," << q5
+             << "," << q6 << "," << q7 << "," << q8 << std::endl;
     }
     file.close();
     std::cout << "Path saved to " << filename << std::endl;

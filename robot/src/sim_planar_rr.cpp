@@ -3,7 +3,8 @@
 #include <iostream>
 #include <vector>
 
-PlanarRRSIM::PlanarRRSIM(const PlanarRR &robot, const std::vector<Rectangle> &env) : robot(robot), env(env) {
+PlanarRRSIM::PlanarRRSIM(const PlanarRR &robot, const std::vector<Rectangle> &env)
+    : robot(robot), env(env) {
 }
 
 PlanarRRSIM::~PlanarRRSIM() {

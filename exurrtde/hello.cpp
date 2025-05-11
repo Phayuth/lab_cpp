@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     rtde_control.moveJ(qnew, 1.05, 1.4);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
-    rtde_control.stopJ(0.5); // Stop the movement before it reaches new_q
+    rtde_control.stopJ(0.5);   // Stop the movement before it reaches new_q
     rtde_control.stopScript(); // Stop the RTDE control script
 
     return 0;
