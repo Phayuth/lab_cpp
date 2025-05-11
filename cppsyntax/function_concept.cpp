@@ -2,7 +2,7 @@
 #include <iostream>
 
 template <typename T>
-requires std::integral<T> // constraint on template to satisfy
+    requires std::integral<T> // constraint on template to satisfy
 T add(T a, T b) {
     return a + b;
 }
