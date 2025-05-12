@@ -1,5 +1,5 @@
 # Lab C++
 This Package is create to collect some of my cpp code that I have learnt. [For Mom!]
 
-### Reference [List](./doc/)
+### Reference [List](./_doc/)
 There are detail of the package, read more in the references list link above.

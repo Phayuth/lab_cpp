@@ -1,4 +1,4 @@
-#include "btBulletDynamicsCommon.h"
+#include <bullet/btBulletDynamicsCommon.h>
 #include <stdio.h>
 
 /// This is a Hello World program for running a basic Bullet physics simulation

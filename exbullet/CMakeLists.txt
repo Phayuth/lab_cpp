@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
-
 project(exbullet)
-
 set(CMAKE_CXX_STANDARD 11)
 
-# Include directories
 include_directories("/usr/include/eigen3")
 include_directories("/usr/include/bullet")
 
