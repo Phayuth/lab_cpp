@@ -1,8 +1,8 @@
+#include "../Utils/b3Clock.h"
 #include "Bullet3Common/b3Quaternion.h"
 #include "Bullet3Common/b3Vector3.h"
 #include "SharedMemory/PhysicsClientC_API.h"
 #include "SharedMemory/SharedMemoryInProcessPhysicsC_API.h"
-#include "Utils/b3Clock.h"
 #include <array>
 #include <fstream>
 #include <iostream>
@@ -12,10 +12,10 @@
 #include <vector>
 
 #include "findaltconfig.cpp"
-#include <ompl/base/goals/GoalStates.h>
-#include <ompl/base/spaces/RealVectorStateSpace.h>
-#include <ompl/geometric/SimpleSetup.h>
-#include <ompl/geometric/planners/rrt/RRTstar.h>
+#include <ompl-1.5/ompl/base/goals/GoalStates.h>
+#include <ompl-1.5/ompl/base/spaces/RealVectorStateSpace.h>
+#include <ompl-1.5/ompl/geometric/SimpleSetup.h>
+#include <ompl-1.5/ompl/geometric/planners/rrt/RRTstar.h>
 
 extern const int CONTROL_RATE;
 const int CONTROL_RATE = 500;
@@ -77,7 +77,7 @@ bool collision_check_singlebody(b3PhysicsClientHandle &kPhysClient, int &bodyA,
     struct b3ContactInformation contactInfo;
     if (statusType == CMD_CONTACT_POINT_INFORMATION_COMPLETED) {
         b3GetContactPointInformation(kPhysClient, &contactInfo);
-        if (contactInfo.m_contactPointData > 0) {
+        if (contactInfo.m_contactPointData != nullptr) {
             return true;
         }
     }

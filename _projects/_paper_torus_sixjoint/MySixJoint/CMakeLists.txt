@@ -1,56 +1,108 @@
-# Specify the minimum CMake version
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
+project(App_SixJoint LANGUAGES CXX)
 
-# Project name
-project(App_SixJoint)
+# ——————————————————————————————————————————————
+# 1) Where you installed Bullet3
+#————————————————————————————————————————————————
+# Change this to your actual install location
 
-# Set the path to the Bullet3 source code
-# Update this path to your Bullet3 source directory
-set(BULLET_PHYSICS_SOURCE_DIR "/home/yuth/ws_yuthdev/bullet3-3.25")
-# Set the path to the Bullet3 build directory
-set(BULLET_PHYSICS_BUILD_DIR "${BULLET_PHYSICS_SOURCE_DIR}/build_cmake")
-
-
-# Include directories for Bullet3
+set(BULLET_ROOT_DIR "/home/yuth/robotics_dev/bullet3-3.25")
+set(BULLET_LIB_DIR "${BULLET_INSTALL_DIR}/lib")
+set(BULLET_INC_DIR "${BULLET_INSTALL_DIR}/include")
 include_directories(
-    ${BULLET_PHYSICS_SOURCE_DIR}/src
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/ThirdPartyLibs
+    ${BULLET_ROOT_DIR}/src
+    ${BULLET_ROOT_DIR}/examples
+    ${BULLET_ROOT_DIR}/examples/ThirdPartyLibs
+    ${BULLET_ROOT_DIR}/examples/ThirdPartyLibs/enet/include
+    # ${BULLET_ROOT_DIR}/examples/ThirdPartyLibs/clsocket/src
 )
 
-# Define the source files for your application
-set(RobotSimulator_SRCS
+#————————————————————————————————————————————————
+# 2) C++ standard and definitions
+#————————————————————————————————————————————————
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Bullet example needs these
+add_compile_definitions(
+    GLEW_INIT_OPENGL11_FUNCTIONS=1
+    GLEW_STATIC
+    GLEW_DYNAMIC_LOAD_ALL_GLX_FUNCTIONS=1
+)
+
+#————————————————————————————————————————————————
+# 3) Your sources
+#————————————————————————————————————————————————
+set(APP_SIXJOINT_SRCS
     MySixJoint.cpp
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/SharedMemory/b3RobotSimulatorClientAPI_NoDirect.cpp
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/SharedMemory/IKTrajectoryHelper.cpp
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/TinyRenderer/TinyRenderer.cpp
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/SharedMemory/PhysicsServer.cpp
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/SharedMemory/PhysicsClient.cpp
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/SharedMemory/PhysicsDirect.cpp
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/SharedMemory/PhysicsServerCommandProcessor.cpp
-    ${BULLET_PHYSICS_SOURCE_DIR}/examples/Utils/b3ResourcePath.cpp
+
 )
 
-# Add executable
-add_executable(App_SixJoint ${RobotSimulator_SRCS})
+add_executable(App_SixJoint ${APP_SIXJOINT_SRCS})
 
-# Link Bullet3 shared libraries from the local build directory
-target_link_libraries(App_SixJoint
-    ${BULLET_PHYSICS_BUILD_DIR}/src/BulletDynamics/libBulletDynamics.so
-    ${BULLET_PHYSICS_BUILD_DIR}/src/BulletCollision/libBulletCollision.so
-    ${BULLET_PHYSICS_BUILD_DIR}/src/LinearMath/libLinearMath.so
+#————————————————————————————————————————————————
+# 4) Include path
+#————————————————————————————————————————————————
+target_include_directories(App_SixJoint PRIVATE
+    ${BULLET_INC_DIR}
 )
 
+#————————————————————————————————————————————————
+# 5) Find installed Bullet libs
+#————————————————————————————————————————————————
+# Macro to simplify find_library
+macro(find_bullet_lib var name)
+    find_library(${var}
+        NAMES ${name}
+        PATHS ${BULLET_LIB_DIR}
+        NO_DEFAULT_PATH
+    )
+    if(NOT ${var})
+        message(FATAL_ERROR "Could not find Bullet library: ${name} in ${BULLET_LIB_DIR}")
+    endif()
+endmacro()
 
+find_bullet_lib(LIB_SM BulletSharedMemory)
+find_bullet_lib(LIB_BEBL BulletExampleBrowserLib)
+find_bullet_lib(LIB_FILE_BUL BulletFileLoader)
+find_bullet_lib(LIB_WORLDIMP BulletWorldImporter)
+find_bullet_lib(LIB_SOFTBODY BulletSoftBody)
+find_bullet_lib(LIB_DYNA BulletDynamics)
+find_bullet_lib(LIB_COLL BulletCollision)
+find_bullet_lib(LIB_IDY_UTILS BulletInverseDynamicsUtils)
+find_bullet_lib(LIB_IDY BulletInverseDynamics)
+find_bullet_lib(LIB_LMath LinearMath)
+find_bullet_lib(LIB_OGW OpenGLWindow)
+find_bullet_lib(LIB_GW gwen)
+find_bullet_lib(LIB_BIK BussIK)
+find_bullet_lib(LIB_B3C Bullet3Common)
 
-# # Add definitions for OpenGL and GLEW
-# add_definitions("-DGLEW_STATIC")
-# include_directories(${BULLET_PHYSICS_SOURCE_DIR}/btgui/OpenGLWindow/GlewWindows)
+#————————————————————————————————————————————————
+# 6) Link everything explicitly
+#————————————————————————————————————————————————
+target_link_libraries(App_SixJoint PRIVATE
+    ${LIB_SM}
+    ${LIB_BEBL}
+    ${LIB_FILE_BUL}
+    ${LIB_WORLDIMP}
+    ${LIB_SOFTBODY}
+    ${LIB_DYNA}
+    ${LIB_COLL}
+    ${LIB_IDY_UTILS}
+    ${LIB_IDY}
+    ${LIB_LMath}
+    ${LIB_OGW}
+    ${LIB_GW}
+    ${LIB_BIK}
+    ${LIB_B3C}
+    pthread
+    dl
+)
 
-# # Link OpenGL and pthread
-# find_package(OpenGL REQUIRED)
-# target_link_libraries(App_SixJoint
-#     ${OPENGL_gl_LIBRARY}
-#     pthread
-#     dl
-# )
+#————————————————————————————————————————————————
+# 7) Optional: version & debug postfix
+#————————————————————————————————————————————————
+set_target_properties(App_SixJoint PROPERTIES
+    VERSION 3.25
+    DEBUG_POSTFIX _d
+)

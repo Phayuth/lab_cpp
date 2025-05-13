@@ -6,6 +6,7 @@ INCLUDE_DIRECTORIES(
 		${BULLET_PHYSICS_SOURCE_DIR}/examples/ThirdPartyLibs/enet/include
 		${BULLET_PHYSICS_SOURCE_DIR}/examples/ThirdPartyLibs/clsocket/src
 		"/usr/include/eigen3"
+		"/usr/include/ompl-1.5"
   )
 
 

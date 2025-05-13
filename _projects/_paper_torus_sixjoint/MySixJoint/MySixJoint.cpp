@@ -1,8 +1,8 @@
-#include "Bullet3Common/b3Quaternion.h"
-#include "Bullet3Common/b3Vector3.h"
-#include "SharedMemory/PhysicsClientC_API.h"
-#include "SharedMemory/SharedMemoryInProcessPhysicsC_API.h"
-#include "Utils/b3Clock.h"
+#include "bullet/Bullet3Common/b3Quaternion.h"
+#include "bullet/Bullet3Common/b3Vector3.h"
+#include "bullet/SharedMemory/PhysicsClientC_API.h"
+#include "bullet/SharedMemory/SharedMemoryInProcessPhysicsC_API.h"
+#include "bullet/Utils/b3Clock.h"
 #include <array>
 #include <iostream>
 #include <map>
