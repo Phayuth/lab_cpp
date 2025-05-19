@@ -1,5 +1,6 @@
 #include "findaltconfig.h"
 #include "sim_planar_rr.h"
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <ompl-1.5/ompl/base/PlannerDataStorage.h>
@@ -66,7 +67,8 @@ int main() {
     ss.setStartAndGoalStates(start, goal);
 
     // Planner setup and solve
-    auto planner = std::make_shared<og::PRM>(ss.getSpaceInformation());
+    // auto planner = std::make_shared<og::PRM>(ss.getSpaceInformation());
+    auto planner = std::make_shared<og::PRMstar>(ss.getSpaceInformation());
     ss.setPlanner(planner);
     ob::PlannerStatus solved = ss.solve(config["time_limit"].as<double>());
 
@@ -77,7 +79,10 @@ int main() {
     ss.getPlannerData(data);
 
     // save to graphml
-    std::ofstream file("saved_planner.graphml");
+    const char *varrsrc = std::getenv("RSRC_DIR");
+    std::string save =
+        std::string(varrsrc) + "/rnd_torus/saved_prmstar_planner.graphml";
+    std::ofstream file(save);
     data.printGraphML(file);
     file.close();
 
