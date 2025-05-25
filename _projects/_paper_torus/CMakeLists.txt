@@ -28,3 +28,13 @@ target_link_libraries(paper_so2s PUBLIC ompl robot spatial_geometry yaml-cpp)
 find_package(Boost REQUIRED COMPONENTS serialization)
 add_executable(paper_prm_build paper_r2s_prm_build.cpp)
 target_link_libraries(paper_prm_build PUBLIC ompl robot spatial_geometry yaml-cpp Boost::serialization)
+
+
+
+add_executable(paper_r6s paper_r6s.cpp)
+target_link_libraries(paper_r6s PUBLIC ompl robot spatial_geometry yaml-cpp)
+
+add_executable(paper_constrained paper_constrained.cpp)
+target_link_libraries(paper_constrained PUBLIC ompl robot spatial_geometry yaml-cpp)
+
+
