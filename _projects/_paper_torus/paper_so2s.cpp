@@ -2,6 +2,7 @@
 RRTStar Planning with SO2 state space strictly on -pi/pi.
 */
 #include "sim_planar_rr.h"
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <ompl-1.5/ompl/base/goals/GoalState.h>
@@ -23,17 +24,33 @@ void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
                       const std::string &filename);
 
 int main() {
-    // load YAML configurations
+    // read data from YAML
     YAML::Node config = YAML::LoadFile("../config/paper_so2s.yaml");
-
-    // Robot setup
     double l1 = config["robot"]["l1"].as<double>();
     double l2 = config["robot"]["l2"].as<double>();
+    auto rectangles = config["env"]["rectangles"];
+    std::vector<double> qstart = config["qstart"].as<std::vector<double>>();
+    std::vector<double> qgoal = config["qgoal"].as<std::vector<double>>();
+    double range = config["range"].as<double>();
+    double bias = config["bias"].as<double>();
+    double time_limit = config["time_limit"].as<double>();
+    bool simplify_solution = config["simplify_solution"].as<bool>();
+    const char *varrsrc = std::getenv("RSRC_DIR");
+    std::string save_planner_graphml =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_planner_data"].as<std::string>() + ".graphml";
+    std::string save_start_goal =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_start_goal"].as<std::string>() + ".csv";
+    std::string save_path = std::string(varrsrc) + "/rnd_torus/" +
+                            config["path_save_path"].as<std::string>() + ".csv";
+
+    // Robot setup
     PlanarRR robot(l1, l2);
 
     // Simulation setup
     std::vector<Rectangle> env;
-    for (const auto &rect : config["env"]["rectangles"]) {
+    for (const auto &rect : rectangles) {
         env.push_back(Rectangle(rect[0].as<double>(),
                                 rect[1].as<double>(),
                                 rect[2].as<double>(),
@@ -44,38 +61,36 @@ int main() {
     // Planning space setup
     auto space = std::make_shared<ob::CompoundStateSpace>(); // each joint
                                                              // represented by SO2
-    space->addSubspace(std::make_shared<ob::SO2StateSpace>(),
-                       1.0); // First joint with weight of 1.0
-    space->addSubspace(std::make_shared<ob::SO2StateSpace>(),
-                       1.0); // Second joint
+    // First joint with weight of 1.0
+    space->addSubspace(std::make_shared<ob::SO2StateSpace>(), 1.0);
+    // Second joint
+    space->addSubspace(std::make_shared<ob::SO2StateSpace>(), 1.0);
     og::SimpleSetup ss(space);
 
-    // Collision setup. Set the state validity checker using a lambda to pass
-    // 'sim' to 'isStateValid'
+    // Collision setup. Set the state validity checker using a lambda
     ss.setStateValidityChecker(
         [&sim](const ob::State *state) { return isStateValid(state, sim); });
 
     // start and goal states
     ob::ScopedState<ob::CompoundStateSpace> start(space);
-    start[0] = config["qstart"][0].as<double>();
-    start[1] = config["qstart"][1].as<double>();
+    start[0] = qstart[0];
+    start[1] = qstart[1];
     ob::ScopedState<ob::CompoundStateSpace> goal(space);
-    goal[0] = config["qgoal"][0].as<double>();
-    goal[1] = config["qgoal"][1].as<double>();
+    goal[0] = qgoal[1];
+    goal[1] = qgoal[1];
     ss.setStartAndGoalStates(start, goal);
 
     // Planner setup and solved
-    // auto planner = std::make_shared<og::RRT>(ss.getSpaceInformation());
     auto planner = std::make_shared<og::RRTstar>(ss.getSpaceInformation());
-    planner->setRange(config["range"].as<double>());
-    planner->setGoalBias(config["bias"].as<double>());
+    planner->setRange(range);
+    planner->setGoalBias(bias);
     ss.setPlanner(planner);
-    ob::PlannerStatus solved = ss.solve(config["time_limit"].as<double>());
+    ob::PlannerStatus solved = ss.solve(time_limit);
 
     if (solved) {
         std::cout << "Found solution! Printing it out...!" << std::endl;
 
-        if (config["simplify_solution"].as<bool>()) {
+        if (simplify_solution) {
             ss.simplifySolution();
         }
         ss.getSolutionPath().print(std::cout);
@@ -84,13 +99,9 @@ int main() {
         const og::PathGeometric &path = ss.getSolutionPath();
         auto space_information(
             std::make_shared<ompl::base::SpaceInformation>(space));
-        savePathToFile(path, config["path_save_path"].as<std::string>() + ".csv");
-        savePlannerData(planner,
-                        space_information,
-                        config["path_save_planner_data"].as<std::string>() +
-                            ".graphml");
-        saveStartAndGoal(
-            ss, config["path_save_start_goal"].as<std::string>() + ".csv");
+        savePathToFile(path, save_path);
+        savePlannerData(planner, space_information, save_planner_graphml);
+        saveStartAndGoal(ss, save_start_goal);
     } else {
         std::cout << "No solution found." << std::endl;
     }
@@ -132,8 +143,6 @@ void savePlannerData(const ompl::base::PlannerPtr &planner,
                      const std::string &filename) {
     ompl::base::PlannerData plannerData(si);
     planner->getPlannerData(plannerData);
-
-    // Save PlannerData to a .graphml file
     std::ofstream file(filename);
     plannerData.printGraphML(file);
     file.close();

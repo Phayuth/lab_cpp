@@ -1,3 +1,4 @@
+import os
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
@@ -31,8 +32,9 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml("./_projects/_paper_torus/build/saved_planner.graphml")
-colp = np.load("./_projects/_paper_torus/config/collisionpoint_exts.npy")
+rsrc = os.environ["RSRC_DIR"] + "/rnd_torus/"
+graph = nx.read_graphml(rsrc + "saved_planner.graphml")
+colp = np.load(rsrc + "collisionpoint_exts.npy")
 
 fig, ax = plt.subplots()
 ax.set_aspect("equal")

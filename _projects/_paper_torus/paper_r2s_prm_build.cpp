@@ -1,3 +1,6 @@
+/*
+PRM Planning with R2 state space can be on -pi/pi and -2pi/2pi.
+*/
 #include "findaltconfig.h"
 #include "sim_planar_rr.h"
 #include <cstdlib>
@@ -16,11 +19,9 @@ namespace ob = ompl::base;
 namespace og = ompl::geometric;
 
 bool isStateValid(const ob::State *state, PlanarRRSIM &sim);
-
 void savePlannerData(const ompl::base::PlannerPtr &planner,
                      const ompl::base::SpaceInformationPtr &si,
                      const std::string &filename);
-
 void savePlannerStorage(ob::PlannerDataStorage &datastorage, ob::PlannerData &data,
                         std::string &filename);
 void loadPlannerStoarge(ob::PlannerDataStorage &datastorage, ob::PlannerData &data,
@@ -29,15 +30,33 @@ void loadPlannerStoarge(ob::PlannerDataStorage &datastorage, ob::PlannerData &da
 int main() {
     // Load YAML
     YAML::Node config = YAML::LoadFile("../config/paper_r2s_prm_build.yaml");
-
-    // Robot setup
     double l1 = config["robot"]["l1"].as<double>();
     double l2 = config["robot"]["l2"].as<double>();
+    auto rectangles = config["env"]["rectangles"];
+    std::vector<double> qlimit = config["qlimit"].as<std::vector<double>>();
+    std::vector<double> qstart = config["qstart"].as<std::vector<double>>();
+    std::vector<double> qgoal = config["qgoal"].as<std::vector<double>>();
+    double time_limit = config["time_limit"].as<double>();
+    bool simplify_solution = config["simplify_solution"].as<bool>();
+    const char *varrsrc = std::getenv("RSRC_DIR");
+    std::string save_planner_graphml =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_planner_data"].as<std::string>() + ".graphml";
+    std::string save_planner_bin =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_planner_data_bin"].as<std::string>();
+    std::string save_start_goal =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_start_goal"].as<std::string>() + ".csv";
+    std::string save_path = std::string(varrsrc) + "/rnd_torus/" +
+                            config["path_save_path"].as<std::string>() + ".csv";
+
+    // Robot setup
     PlanarRR robot(l1, l2);
 
     // Simulation environment setup
     std::vector<Rectangle> env;
-    for (const auto &rect : config["env"]["rectangles"]) {
+    for (const auto &rect : rectangles) {
         env.push_back(Rectangle(rect[0].as<double>(),
                                 rect[1].as<double>(),
                                 rect[2].as<double>(),
@@ -48,8 +67,10 @@ int main() {
     // Planning space setup
     auto space = std::make_shared<ob::RealVectorStateSpace>(2);
     ob::RealVectorBounds bounds(2);
-    bounds.setLow(-config["qlimit"][0].as<double>());
-    bounds.setHigh(config["qlimit"][1].as<double>());
+    for (int i = 0; i < 2; ++i) {
+        bounds.setLow(i, -qlimit[i]);
+        bounds.setHigh(i, qlimit[i]);
+    }
     space->setBounds(bounds);
     og::SimpleSetup ss(space);
 
@@ -59,18 +80,18 @@ int main() {
 
     // start and goal states
     ob::ScopedState<> start(space);
-    start[0] = config["qstart"][0].as<double>();
-    start[1] = config["qstart"][1].as<double>();
+    start[0] = qstart[0];
+    start[1] = qstart[1];
     ob::ScopedState<> goal(space);
-    goal[0] = config["qgoal"][0].as<double>();
-    goal[1] = config["qgoal"][1].as<double>();
+    goal[0] = qgoal[0];
+    goal[1] = qgoal[1];
     ss.setStartAndGoalStates(start, goal);
 
     // Planner setup and solve
     // auto planner = std::make_shared<og::PRM>(ss.getSpaceInformation());
     auto planner = std::make_shared<og::PRMstar>(ss.getSpaceInformation());
     ss.setPlanner(planner);
-    ob::PlannerStatus solved = ss.solve(config["time_limit"].as<double>());
+    ob::PlannerStatus solved = ss.solve(time_limit);
 
     // storage
     ob::PlannerDataStorage datastorage;
@@ -78,17 +99,9 @@ int main() {
     ob::PlannerData data(ss.getSpaceInformation());
     ss.getPlannerData(data);
 
-    // save to graphml
-    const char *varrsrc = std::getenv("RSRC_DIR");
-    std::string save =
-        std::string(varrsrc) + "/rnd_torus/saved_prmstar_planner.graphml";
-    std::ofstream file(save);
-    data.printGraphML(file);
-    file.close();
-
     // save to boost graph
-    std::string prm_data_name = "prm_data";
-    savePlannerStorage(datastorage, data, prm_data_name);
+    savePlannerData(planner, ss.getSpaceInformation(), save_planner_graphml);
+    savePlannerStorage(datastorage, data, save_planner_bin);
     return 0;
 }
 
@@ -106,8 +119,6 @@ void savePlannerData(const ompl::base::PlannerPtr &planner,
                      const std::string &filename) {
     ompl::base::PlannerData plannerData(si);
     planner->getPlannerData(plannerData);
-
-    // Save PlannerData to a .graphml file
     std::ofstream file(filename);
     plannerData.printGraphML(file);
     file.close();

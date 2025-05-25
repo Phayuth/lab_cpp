@@ -2,6 +2,7 @@
 RRTStar Planning with R2 state space can be on -pi/pi and -2pi/2pi.
 */
 #include "sim_planar_rr.h"
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <ompl-1.5/ompl/base/goals/GoalState.h>
@@ -44,23 +45,42 @@ class CartesianGoalRegion : public ob::GoalRegion {
             return std::sqrt(dx * dx + dy * dy);
         }
 
-    private:
+    public:
         PlanarRR &robot_;
         double x_goal_, y_goal_, tol_;
 };
 
 int main() {
-    // load YAML configurations
+    // read YAML configurations
     YAML::Node config = YAML::LoadFile("../config/paper_constrained.yaml");
-
-    // Robot setup
     double l1 = config["robot"]["l1"].as<double>();
     double l2 = config["robot"]["l2"].as<double>();
+    auto rectangles = config["env"]["rectangles"];
+    std::vector<double> qlimit = config["qlimit"].as<std::vector<double>>();
+    std::vector<double> qstart = config["qstart"].as<std::vector<double>>();
+    double xgoal = config["xgoal"].as<double>();
+    double ygoal = config["ygoal"].as<double>();
+    double goal_tolerance = config["goal_tolerance"].as<double>();
+    double range = config["range"].as<double>();
+    double bias = config["bias"].as<double>();
+    double time_limit = config["time_limit"].as<double>();
+    bool simplify_solution = config["simplify_solution"].as<bool>();
+    const char *varrsrc = std::getenv("RSRC_DIR");
+    std::string save_planner_graphml =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_planner_data"].as<std::string>() + ".graphml";
+    std::string save_start_goal =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_start_goal"].as<std::string>() + ".csv";
+    std::string save_path = std::string(varrsrc) + "/rnd_torus/" +
+                            config["path_save_path"].as<std::string>() + ".csv";
+
+    // Robot setup
     PlanarRR robot(l1, l2);
 
     // Simulation setup
     std::vector<Rectangle> env;
-    for (const auto &rect : config["env"]["rectangles"]) {
+    for (const auto &rect : rectangles) {
         env.push_back(Rectangle(rect[0].as<double>(),
                                 rect[1].as<double>(),
                                 rect[2].as<double>(),
@@ -70,46 +90,40 @@ int main() {
 
     // Planning space setup
     auto space = std::make_shared<ob::RealVectorStateSpace>(2);
-    auto goalspace = std::make_shared<ob::SE2StateSpace>();
     ob::RealVectorBounds bounds(2);
-    bounds.setLow(-config["qlimit"][0].as<double>());
-    bounds.setHigh(config["qlimit"][1].as<double>());
+    for (size_t i = 0; i < 2; i++) {
+        bounds.setLow(i, -qlimit[i]);
+        bounds.setHigh(i, qlimit[i]);
+    }
     space->setBounds(bounds);
     og::SimpleSetup ss(space);
 
-    // Collision setup. Set the state validity checker using a lambda to pass
-    // 'sim' to 'isStateValid'
     ss.setStateValidityChecker(
         [&sim](const ob::State *state) { return isStateValid(state, sim); });
 
     // start and goal states
     ob::ScopedState<> start(space);
-    start[0] = config["qstart"][0].as<double>();
-    start[1] = config["qstart"][1].as<double>();
+    start[0] = qstart[0];
+    start[1] = qstart[1];
     ss.setStartState(start);
 
     // Instead of ob::ScopedState goal...
     auto goal_region = std::make_shared<CartesianGoalRegion>(
-        ss.getSpaceInformation(),
-        robot,
-        config["xgoal"].as<double>(),
-        config["ygoal"].as<double>(),
-        config["goal_tolerance"].as<double>());
+        ss.getSpaceInformation(), robot, xgoal, ygoal, goal_tolerance);
     ss.setGoal(goal_region);
 
     // Planner setup and solved
     // auto planner = std::make_shared<og::RRT>(ss.getSpaceInformation());
     auto planner = std::make_shared<og::RRTstar>(ss.getSpaceInformation());
-    planner->setRange(config["range"].as<double>());
-    planner->setGoalBias(config["bias"].as<double>());
+    planner->setRange(range);
+    planner->setGoalBias(bias);
     ss.setPlanner(planner);
-    ob::PlannerStatus solved =
-        ss.solve(config["time_limit"].as<double>()); // within a time limit
+    ob::PlannerStatus solved = ss.solve(time_limit);
 
     if (solved) {
         std::cout << "Found solution!" << std::endl;
 
-        if (config["simplify_solution"].as<bool>()) {
+        if (simplify_solution) {
             ss.simplifySolution();
         }
 
@@ -118,13 +132,9 @@ int main() {
         const og::PathGeometric &path = ss.getSolutionPath();
         auto space_information(
             std::make_shared<ompl::base::SpaceInformation>(space));
-        savePathToFile(path, config["path_save_path"].as<std::string>() + ".csv");
-        savePlannerData(planner,
-                        space_information,
-                        config["path_save_planner_data"].as<std::string>() +
-                            ".graphml");
-        // saveStartAndGoal(
-        //     ss, config["path_save_start_goal"].as<std::string>() + ".csv");
+        savePathToFile(path, save_path);
+        savePlannerData(planner, space_information, save_planner_graphml);
+        saveStartAndGoal(ss, save_start_goal);
     } else {
         std::cout << "No solution found." << std::endl;
     }
@@ -168,8 +178,6 @@ void savePlannerData(const ompl::base::PlannerPtr &planner,
                      const std::string &filename) {
     ompl::base::PlannerData plannerData(si);
     planner->getPlannerData(plannerData);
-
-    // Save PlannerData to a .graphml file
     std::ofstream file(filename);
     plannerData.printGraphML(file);
     file.close();
@@ -179,8 +187,8 @@ void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
                       const std::string &filename) {
     // Get the start and goal states
     const ob::State *startState = ss.getProblemDefinition()->getStartState(0);
-    const ob::GoalState *goalState =
-        ss.getProblemDefinition()->getGoal()->as<ob::GoalState>();
+    const CartesianGoalRegion *goalState =
+        ss.getProblemDefinition()->getGoal()->as<CartesianGoalRegion>();
 
     std::ofstream file(filename);
 
@@ -188,9 +196,7 @@ void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
         startState->as<ob::RealVectorStateSpace::StateType>()->values;
     file << start_coords[0] << "," << start_coords[1] << std::endl;
 
-    const double *goal_coords =
-        goalState->getState()->as<ob::RealVectorStateSpace::StateType>()->values;
-    file << goal_coords[0] << "," << goal_coords[1] << std::endl;
+    file << goalState->x_goal_ << "," << goalState->y_goal_ << std::endl;
 
     file.close();
 }

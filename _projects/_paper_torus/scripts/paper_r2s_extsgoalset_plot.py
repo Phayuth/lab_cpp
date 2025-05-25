@@ -1,3 +1,4 @@
+import os
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
@@ -31,17 +32,14 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml(
-    "./_projects/_paper_torus/build/paper_r2s_extsgoalset_planner_data.graphml"
-)
-path = np.loadtxt(
-    "./_projects/_paper_torus/build/paper_r2s_extsgoalset_path.csv", delimiter=","
-)
+rsrc = os.environ["RSRC_DIR"] + "/rnd_torus/"
+graph = nx.read_graphml(rsrc + "paper_r2s_extsgoalset_planner_data.graphml")
+path = np.loadtxt(rsrc + "paper_r2s_extsgoalset_path.csv", delimiter=",")
 state = np.loadtxt(
-    "./_projects/_paper_torus/build/paper_r2s_extsgoalset_start_goal.csv",
+    rsrc + "paper_r2s_extsgoalset_start_goal.csv",
     delimiter=",",
 )
-colp = np.load("./_projects/_paper_torus/config/collisionpoint_exts.npy")
+colp = np.load(rsrc + "collisionpoint_exts.npy")
 
 # plotting
 plt.figure(figsize=(8, 8))

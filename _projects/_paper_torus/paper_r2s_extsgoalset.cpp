@@ -3,6 +3,7 @@ RRTStar Planning with R2 state space strictly over -2pi/2pi.
 */
 #include "findaltconfig.h"
 #include "sim_planar_rr.h"
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <ompl-1.5/ompl/base/goals/GoalStates.h>
@@ -26,27 +27,47 @@ void saveStartAndGoal(const ompl::geometric::SimpleSetup &ss,
 int main() {
     // Load YAML configuration
     YAML::Node config = YAML::LoadFile("../config/paper_r2s_extsgoalset.yaml");
-
-    // Robot setup
     double l1 = config["robot"]["l1"].as<double>();
     double l2 = config["robot"]["l2"].as<double>();
+    auto rectangles = config["env"]["rectangles"];
+    std::vector<double> qlimit = config["qlimit"].as<std::vector<double>>();
+    std::vector<double> qstart = config["qstart"].as<std::vector<double>>();
+    std::vector<double> qgoal = config["qgoal"].as<std::vector<double>>();
+    double range = config["range"].as<double>();
+    double bias = config["bias"].as<double>();
+    double time_limit = config["time_limit"].as<double>();
+    bool simplify_solution = config["simplify_solution"].as<bool>();
+    const char *varrsrc = std::getenv("RSRC_DIR");
+    std::string save_planner_graphml =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_planner_data"].as<std::string>() + ".graphml";
+    std::string save_start_goal =
+        std::string(varrsrc) + "/rnd_torus/" +
+        config["path_save_start_goal"].as<std::string>() + ".csv";
+    std::string save_path = std::string(varrsrc) + "/rnd_torus/" +
+                            config["path_save_path"].as<std::string>() + ".csv";
+
+    // Robot setup
     PlanarRR robot(l1, l2);
 
     // Simulation environment setup
     std::vector<Rectangle> env;
-    for (const auto &rect : config["env"]["rectangles"]) {
+    for (const auto &rect : rectangles) {
         env.push_back(Rectangle(rect[0].as<double>(),
                                 rect[1].as<double>(),
                                 rect[2].as<double>(),
                                 rect[3].as<double>()));
     }
+    // Robot setup
     PlanarRRSIM sim(robot, env);
 
     // Planning space setup
     auto space = std::make_shared<ob::RealVectorStateSpace>(2);
     ob::RealVectorBounds bounds(2);
-    bounds.setLow(-2.0 * M_PI);
-    bounds.setHigh(2.0 * M_PI);
+    for (size_t i = 0; i < 2; i++) {
+        bounds.setLow(i, -qlimit[i]);
+        bounds.setHigh(i, qlimit[i]);
+    }
     space->setBounds(bounds);
     og::SimpleSetup ss(space);
 
@@ -56,18 +77,18 @@ int main() {
 
     // Define the start state
     ob::ScopedState<> start(space);
-    start[0] = config["qstart"][0].as<double>();
-    start[1] = config["qstart"][1].as<double>();
+    start[0] = qstart[0];
+    start[1] = qstart[1];
     ss.setStartState(start);
 
     // Define multiple goal states
-    Eigen::RowVectorXd qgoal(2);
-    qgoal[0] = config["qgoal"][0].as<double>();
-    qgoal[1] = config["qgoal"][1].as<double>();
-    Eigen::RowVectorXd qlimit(2);
-    qlimit[0] = config["qlimit"][0].as<double>();
-    qlimit[1] = config["qlimit"][1].as<double>();
-    Eigen::MatrixXd qgoalalt = find_alt_config(qgoal, qlimit);
+    Eigen::RowVectorXd qgoal_eig(2);
+    qgoal_eig[0] = qgoal[0];
+    qgoal_eig[1] = qgoal[1];
+    Eigen::RowVectorXd qlimit_eig(2);
+    qlimit_eig[0] = qlimit[0];
+    qlimit_eig[1] = qlimit[1];
+    Eigen::MatrixXd qgoalalt = find_alt_config(qgoal_eig, qlimit_eig);
     printf("\nI found %d alternative goal configurations.\n", qgoalalt.rows());
     printf("\nThey are: \n");
     for (size_t i = 0; i < qgoalalt.rows(); i++) {
@@ -85,30 +106,26 @@ int main() {
 
     // Planner setup and solve
     auto planner = std::make_shared<og::RRTstar>(ss.getSpaceInformation());
-    planner->setRange(config["range"].as<double>());
-    planner->setGoalBias(config["bias"].as<double>());
+    planner->setRange(range);
+    planner->setGoalBias(bias);
     ss.setPlanner(planner);
-    ob::PlannerStatus solved =
-        ss.solve(config["time_limit"].as<double>()); // within a time limit
+    ob::PlannerStatus solved = ss.solve(time_limit);
 
     if (solved) {
         std::cout << "Found solution:" << std::endl;
 
-        if (config["simplify_solution"].as<bool>()) {
+        if (simplify_solution) {
             ss.simplifySolution();
         }
+
         ss.getSolutionPath().print(std::cout);
 
         const og::PathGeometric &path = ss.getSolutionPath();
         auto space_information(
             std::make_shared<ompl::base::SpaceInformation>(space));
-        savePathToFile(path, config["path_save_path"].as<std::string>() + ".csv");
-        savePlannerData(planner,
-                        space_information,
-                        config["path_save_planner_data"].as<std::string>() +
-                            ".graphml");
-        saveStartAndGoal(
-            ss, config["path_save_start_goal"].as<std::string>() + ".csv");
+        savePathToFile(path, save_path);
+        savePlannerData(planner, space_information, save_planner_graphml);
+        saveStartAndGoal(ss, save_start_goal);
     } else {
         std::cout << "No solution found" << std::endl;
     }
@@ -121,9 +138,6 @@ bool isStateValid(const ob::State *state, PlanarRRSIM &sim) {
         state->as<ob::RealVectorStateSpace::StateType>();
     double theta1 = realState->values[0];
     double theta2 = realState->values[1];
-    // Check for collisions using the sim object
-    // the function returns true if it is collision, which is notvalid.
-    // since the isStateValid is oppsite to the collision, we reverse it.
     bool c = sim.check_collision(theta1, theta2);
     return !c;
 }
@@ -152,8 +166,6 @@ void savePlannerData(const ompl::base::PlannerPtr &planner,
                      const std::string &filename) {
     ompl::base::PlannerData plannerData(si);
     planner->getPlannerData(plannerData);
-
-    // Save PlannerData to a .graphml file
     std::ofstream file(filename);
     plannerData.printGraphML(file);
     file.close();

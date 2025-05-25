@@ -1,3 +1,4 @@
+import os
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
@@ -31,16 +32,11 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml(
-    "./_projects/_paper_torus/build/paper_r2s_planner_data.graphml"
-)
-path = np.loadtxt(
-    "./_projects/_paper_torus/build/paper_r2s_path.csv", delimiter=","
-)
-state = np.loadtxt(
-    "./_projects/_paper_torus/build/paper_r2s_start_goal.csv", delimiter=","
-)
-
+rsrc = os.environ["RSRC_DIR"] + "/rnd_torus/"
+graph = nx.read_graphml(rsrc + "paper_r2s_planner_data.graphml")
+path = np.loadtxt(rsrc + "paper_r2s_path.csv", delimiter=",")
+state = np.loadtxt(rsrc + "paper_r2s_start_goal.csv", delimiter=",")
+colp = np.load(rsrc + "collisionpoint_so2s.npy")
 
 # tree
 for u, v in graph.edges:

@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from itertools import product
 import networkx as nx
@@ -93,16 +94,11 @@ class PlotterConfig:
     pathMarkersize = 7
 
 
-graph = nx.read_graphml(
-    "./_projects/_paper_torus/build/paper_so2s_planner_data.graphml"
-)
-path = np.loadtxt(
-    "./_projects/_paper_torus/build/paper_so2s_path.csv", delimiter=","
-)
-state = np.loadtxt(
-    "./_projects/_paper_torus/build/paper_so2s_start_goal.csv", delimiter=","
-)
-colp = np.load("./_projects/_paper_torus/build/collisionpoint_so2s.npy")
+rsrc = os.environ["RSRC_DIR"] + "/rnd_torus/"
+graph = nx.read_graphml(rsrc + "paper_so2s_planner_data.graphml")
+path = np.loadtxt(rsrc + "paper_so2s_path.csv", delimiter=",")
+state = np.loadtxt(rsrc + "paper_so2s_start_goal.csv", delimiter=",")
+colp = np.load(rsrc + "collisionpoint_so2s.npy")
 
 # plotting
 plt.figure(figsize=(8, 8))
