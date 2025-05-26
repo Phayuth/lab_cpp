@@ -12,8 +12,8 @@ qlimit: [6.28318530718, 6.28318530718] # 2 * PI
 
 qstart: [-3.14, 0.0]
 
-xgoal: 1.57
-ygoal: 0.0
+xgoal: 3.0
+ygoal: 1.4
 goal_tolerance: 0.1
 
 range: 0.3

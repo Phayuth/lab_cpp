@@ -1,9 +1,9 @@
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-joint12 = np.loadtxt(
-    "./_projects/_paper_torus/build/paper_so2s_path.csv", delimiter=","
-)
+path = os.environ["RSRC_DIR"] + "/rnd_torus/"
+joint12 = np.loadtxt(path + "paper_so2s_path.csv", delimiter=",")
 
 
 numseg, numjoints = joint12.shape

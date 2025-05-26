@@ -32,6 +32,7 @@
 *.app
 
 *.npy
+__pycache__/
 
 bin/
 build/
