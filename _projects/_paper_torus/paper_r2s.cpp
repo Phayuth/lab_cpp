@@ -8,7 +8,6 @@ RRTStar Planning with R2 state space can be on -pi/pi and -2pi/2pi.
 #include <ompl-1.5/ompl/base/goals/GoalState.h>
 #include <ompl-1.5/ompl/base/spaces/RealVectorStateSpace.h>
 #include <ompl-1.5/ompl/geometric/SimpleSetup.h>
-#include <ompl-1.5/ompl/geometric/planners/rrt/RRT.h>
 #include <ompl-1.5/ompl/geometric/planners/rrt/RRTstar.h>
 #include <yaml-cpp/yaml.h>
 

@@ -52,7 +52,7 @@ class CartesianGoalRegion : public ob::GoalRegion {
 
 int main() {
     // read YAML configurations
-    YAML::Node config = YAML::LoadFile("../config/paper_constrained.yaml");
+    YAML::Node config = YAML::LoadFile("../config/paper_r2s_constrained.yaml");
     double l1 = config["robot"]["l1"].as<double>();
     double l2 = config["robot"]["l2"].as<double>();
     auto rectangles = config["env"]["rectangles"];

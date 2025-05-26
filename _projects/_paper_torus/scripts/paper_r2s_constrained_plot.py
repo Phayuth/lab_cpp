@@ -77,5 +77,5 @@ def fig_constrained_task():
 
 if __name__ == "__main__":
     # fig_cspace_2d()
-    view_cspace_point()
-    # fig_constrained_task()
+    # view_cspace_point()
+    fig_constrained_task()

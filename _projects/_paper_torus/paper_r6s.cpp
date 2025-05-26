@@ -8,6 +8,7 @@ RRTStar Planning with R2 state space
 #include <ompl-1.5/ompl/base/goals/GoalState.h>
 #include <ompl-1.5/ompl/base/spaces/RealVectorStateSpace.h>
 #include <ompl-1.5/ompl/geometric/SimpleSetup.h>
+#include <ompl-1.5/ompl/geometric/planners/rrt/RRTConnect.h>
 #include <ompl-1.5/ompl/geometric/planners/rrt/RRTstar.h>
 #include <yaml-cpp/yaml.h>
 
@@ -94,10 +95,11 @@ int main() {
     ss.setStartAndGoalStates(start, goal);
 
     // Planner setup and solved
-    // auto planner = std::make_shared<og::RRT>(ss.getSpaceInformation());
-    auto planner = std::make_shared<og::RRTstar>(ss.getSpaceInformation());
+    // auto planner = std::make_shared<og::RRTstar>(ss.getSpaceInformation());
+    // planner->setRange(range);
+    // planner->setGoalBias(bias);
+    auto planner = std::make_shared<og::RRTConnect>(ss.getSpaceInformation());
     planner->setRange(range);
-    planner->setGoalBias(bias);
     ss.setPlanner(planner);
     ob::PlannerStatus solved = ss.solve(time_limit);
 
