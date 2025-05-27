@@ -37,4 +37,5 @@ target_link_libraries(paper_r6s PUBLIC ompl robot spatial_geometry yaml-cpp)
 add_executable(paper_r2s_constrained paper_r2s_constrained.cpp)
 target_link_libraries(paper_r2s_constrained PUBLIC ompl robot spatial_geometry yaml-cpp)
 
-
+add_executable(paper_r6s_constrained paper_r6s_constrained.cpp)
+target_link_libraries(paper_r6s_constrained PUBLIC ompl robot spatial_geometry yaml-cpp)
