@@ -58,29 +58,46 @@ class CartesianGoalRegion : public ob::GoalRegion {
 
 class TaskSpaceConfig6R : public og::TaskSpaceConfig {
     public:
-        TaskSpaceConfig6R() {
+        Planar6R &robot_;
+
+        TaskSpaceConfig6R(Planar6R &robot) : robot_(robot) {
             // Define the task space configuration for the 6R robot
         }
 
         int getDimension() const override {
-            return 6; // 6D task space for the 6R robot
+            return 3; // 3D task space for the 6R robot
         }
 
-        void TaskSpaceConfig6R::project(
-            const ob::State *state,
-            Eigen::Ref<Eigen::VectorXd> ts_proj) const override {
+        void project(const ob::State *state,
+                     Eigen::Ref<Eigen::VectorXd> ts_proj) const override {
             // Project the cspace state into the task space
+            const auto *realState =
+                state->as<ob::RealVectorStateSpace::StateType>();
+            double theta1 = realState->values[0];
+            double theta2 = realState->values[1];
+            double theta3 = realState->values[2];
+            double theta4 = realState->values[3];
+            double theta5 = realState->values[4];
+            double theta6 = realState->values[5];
+            std::array<double, 3> xyp;
+            xyp = robot_.forward_kinematic(
+                theta1, theta2, theta3, theta4, theta5, theta6);
+            ts_proj[0] = xyp[0]; // x position
+            ts_proj[1] = xyp[1]; // y position
+            ts_proj[2] = xyp[2]; // orientation (if applicable)
         }
 
-        void TaskSpaceConfig6R::sample(
-            Eigen::Ref<Eigen::VectorXd> ts_proj) const override {
+        void sample(Eigen::Ref<Eigen::VectorXd> ts_proj) const override {
             // Sample a point uniformly in the task space
+            ts_proj[0] = (double)rand() / RAND_MAX * 10.0;       // x position
+            ts_proj[1] = (double)rand() / RAND_MAX * 10.0;       // y position
+            ts_proj[2] = (double)rand() / RAND_MAX * 2.0 * M_PI; // orientation
         }
 
-        bool TaskSpaceConfig6R::lift(const Eigen::Ref<Eigen::VectorXd> &ts_proj,
-                                     const ob::State *seed,
-                                     ob::State *state) const override {
+        bool lift(const Eigen::Ref<Eigen::VectorXd> &ts_proj,
+                  const ob::State *seed, ob::State *state) const override {
             // Lift the state from the task space to the configuration space
+            return true;
         };
 };
 
@@ -145,28 +162,28 @@ int main() {
         start[i] = qstart[i];
     }
     ss.setStartState(start);
-    // ob::ScopedState<> goal(space);
-    // for (size_t i = 0; i < 6; ++i) {
-    //     goal[i] = qgoal[i];
-    // }
-    // ss.setGoalState(goal);
 
     // planner 1: RRTConnect
     auto planner = std::make_shared<og::RRTConnect>(ss.getSpaceInformation());
+    ob::ScopedState<> goal(space);
+    for (size_t i = 0; i < 6; ++i) {
+        goal[i] = qgoal[i];
+    }
+    ss.setGoalState(goal);
     planner->setRange(range);
 
     // planner 2: RRTstar
     // auto goal_region = std::make_shared<CartesianGoalRegion>(
     //     ss.getSpaceInformation(), robot, xgoal, ygoal, goal_tolerance);
     // ss.setGoal(goal_region);
-    // auto planner =
-    // std::make_shared<og::RRTstar>(ss.getSpaceInformation());
+    // auto planner = std::make_shared<og::RRTstar>(ss.getSpaceInformation());
     // planner->setGoalBias(bias);
     // planner->setRange(range);
 
     // planner 3: TSRRT
-    auto tsconfig = std::make_shared<TaskSpaceConfig6R>();
-    auto planner = std::make_shared<og::TSRRT>(ss.getSpaceInformation(), tsconfig);
+    // auto tsconfig = std::make_shared<TaskSpaceConfig6R>();
+    // auto planner = std::make_shared<og::TSRRT>(ss.getSpaceInformation(),
+    // tsconfig);
 
     // set planner
     ss.setPlanner(planner);
