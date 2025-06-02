@@ -23,6 +23,10 @@ class Planar6R {
         std::array<double, 14> forward_link(double theta1, double theta2,
                                             double theta3, double theta4,
                                             double theta5, double theta6);
+
+        std::array<std::array<double, 6>, 6>
+        get_jacobian(double theta1, double theta2, double theta3, double theta4,
+                     double theta5, double theta6);
 };
 
 #endif

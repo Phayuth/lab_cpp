@@ -59,8 +59,11 @@ class CartesianGoalRegion : public ob::GoalRegion {
 class TaskSpaceConfig6R : public og::TaskSpaceConfig {
     public:
         Planar6R &robot_;
+        const ob::RealVectorBounds bounds_;
+        mutable ompl::RNG rng_;
 
-        TaskSpaceConfig6R(Planar6R &robot) : robot_(robot) {
+        TaskSpaceConfig6R(Planar6R &robot, const ob::RealVectorBounds &bounds)
+            : robot_(robot), bounds_(bounds) {
             // Define the task space configuration for the 6R robot
         }
 
@@ -89,14 +92,18 @@ class TaskSpaceConfig6R : public og::TaskSpaceConfig {
 
         void sample(Eigen::Ref<Eigen::VectorXd> ts_proj) const override {
             // Sample a point uniformly in the task space
-            ts_proj[0] = (double)rand() / RAND_MAX * 10.0;       // x position
-            ts_proj[1] = (double)rand() / RAND_MAX * 10.0;       // y position
-            ts_proj[2] = (double)rand() / RAND_MAX * 2.0 * M_PI; // orientation
+            ts_proj[0] = rng_.uniformReal(bounds_.low[0], bounds_.high[0]);
+            ts_proj[1] = rng_.uniformReal(bounds_.low[1], bounds_.high[1]);
+            ts_proj[2] = rng_.uniformReal(bounds_.low[2], bounds_.high[2]);
         }
 
         bool lift(const Eigen::Ref<Eigen::VectorXd> &ts_proj,
                   const ob::State *seed, ob::State *state) const override {
             // Lift the state from the task space to the configuration space
+            // Given a point in task-space, generate a configuraton space state
+            // that projects to this point.  seed is the nearest task-space
+            // neighbor. Returns false if a lifted configuration could not be
+            // generated.
             return true;
         };
 };
