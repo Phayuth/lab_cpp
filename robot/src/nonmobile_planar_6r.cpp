@@ -64,20 +64,17 @@ std::array<double, 14> Planar6R::forward_link(double theta1, double theta2,
     return bee;
 }
 
-std::array<std::array<double, 6>, 6>
+std::array<std::array<double, 6>, 3>
 Planar6R::get_jacobian(double theta1, double theta2, double theta3, double theta4,
                        double theta5, double theta6) {
 
-    std::array<std::array<double, 6>, 6> jacobian = {};
-
-    std::array<double, 6> thetas = {
-        theta1, theta2, theta3, theta4, theta5, theta6};
-
-    std::array<double, 6> cumsum_thetas = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-
-    for (size_t i = 0; i < 6; ++i) {
-        cumsum_thetas[i] = (i == 0 ? thetas[i] : cumsum_thetas[i - 1]) + thetas[i];
-    }
+    std::array<double, 6> cumsum_thetas = {
+        theta1,
+        theta1 + theta2,
+        theta1 + theta2 + theta3,
+        theta1 + theta2 + theta3 + theta4,
+        theta1 + theta2 + theta3 + theta4 + theta5,
+        theta1 + theta2 + theta3 + theta4 + theta5 + theta6};
 
     std::array<double, 6> cos_thetas = {cos(cumsum_thetas[0]),
                                         cos(cumsum_thetas[1]),
@@ -91,9 +88,51 @@ Planar6R::get_jacobian(double theta1, double theta2, double theta3, double theta
                                         sin(cumsum_thetas[3]),
                                         sin(cumsum_thetas[4]),
                                         sin(cumsum_thetas[5])};
-    for (size_t i = 0; i < 6; i++) {
-        for (size_t j = 0; j < 6; j++) {
-            // todo
-        }
-    }
+    std::array<double, 6> cumsum_links = {link1,
+                                          link1 + link2,
+                                          link1 + link2 + link3,
+                                          link1 + link2 + link3 + link4,
+                                          link1 + link2 + link3 + link4 + link5,
+                                          link1 + link2 + link3 + link4 + link5 +
+                                              link6};
+
+    double s1 = link1 * sin_thetas[0];
+    double s2 = link2 * sin_thetas[1];
+    double s3 = link3 * sin_thetas[2];
+    double s4 = link4 * sin_thetas[3];
+    double s5 = link5 * sin_thetas[4];
+    double s6 = link6 * sin_thetas[5];
+    double c1 = link1 * cos_thetas[0];
+    double c2 = link2 * cos_thetas[1];
+    double c3 = link3 * cos_thetas[2];
+    double c4 = link4 * cos_thetas[3];
+    double c5 = link5 * cos_thetas[4];
+    double c6 = link6 * cos_thetas[5];
+
+    double sum_s = s1 + s2 + s3 + s4 + s5 + s6;
+    double sum_c = c1 + c2 + c3 + c4 + c5 + c6;
+
+    std::array<std::array<double, 6>, 3> jacobian = {};
+    jacobian[0][0] = -sum_s;
+    jacobian[0][1] = -(sum_s - s1);
+    jacobian[0][2] = -(sum_s - s1 - s2);
+    jacobian[0][3] = -(sum_s - s1 - s2 - s3);
+    jacobian[0][4] = -(sum_s - s1 - s2 - s3 - s4);
+    jacobian[0][5] = -(sum_s - s1 - s2 - s3 - s4 - s5);
+
+    jacobian[1][0] = sum_c;
+    jacobian[1][1] = sum_c - c1;
+    jacobian[1][2] = sum_c - c1 - c2;
+    jacobian[1][3] = sum_c - c1 - c2 - c3;
+    jacobian[1][4] = sum_c - c1 - c2 - c3 - c4;
+    jacobian[1][5] = sum_c - c1 - c2 - c3 - c4 - c5;
+
+    jacobian[2][0] = 1.0;
+    jacobian[2][1] = 1.0;
+    jacobian[2][2] = 1.0;
+    jacobian[2][3] = 1.0;
+    jacobian[2][4] = 1.0;
+    jacobian[2][5] = 1.0;
+
+    return jacobian;
 }
